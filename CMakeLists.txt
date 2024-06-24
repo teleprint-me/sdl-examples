@@ -17,3 +17,4 @@ add_link_options(-lSDL2)
 
 # Add executable target
 add_executable(simple simple.c)
+add_executable(line line.c)
