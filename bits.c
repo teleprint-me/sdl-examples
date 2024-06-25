@@ -44,3 +44,21 @@ uint32_t float_to_bits(float value) {
     union Float32 fp32 = {.as_value = value};
     return fp32.as_bits;
 }
+
+bfloat16_t float_to_bfloat16(float value) {
+    float32_t  f32;
+    bfloat16_t bf16;
+
+    // Take the higher 16 bits of the float32 representation
+    f32.as_value = value;
+    bf16.bits    = f32.as_bits >> 16;
+
+    return bf16;
+}
+
+float bfloat16_to_float(bfloat16_t bf16) {
+    float32_t f32;
+    // Shift the bits back to their original position
+    f32.as_bits = ((uint32_t) bf16.bits) << 16;
+    return f32.as_value;
+}
