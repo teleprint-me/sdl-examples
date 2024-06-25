@@ -5,6 +5,7 @@
  * arxiv:1805.11046:Scalable-Methods-for-8-bit-Training-of-Neural-Networks.pdf
  * arxiv:2310.13513:Exploring-the-Potential-of-Flexible-8-bit-Format-Design-and-Algorithm.pdf
  */
+#include "precision.h"
 #include <stdint.h>
 
 typedef enum DataType {
