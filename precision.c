@@ -122,3 +122,62 @@ float float16_to_float(float16_t value) {
     f32.as_bits = f;
     return f32.as_value;
 }
+
+// Example implementation for quant8 and quant4 types
+quant8_t float_to_quant8(float value, size_t size) {
+    quant8_t quant;
+    quant.delta  = float_to_float16(value / (float) size);
+    quant.quants = (int8_t*) malloc(size * sizeof(int8_t));
+    quant.size   = size;
+
+    // Example quantization process (uniform quantization)
+    for (size_t i = 0; i < size; ++i) {
+        quant.quants[i] = (int8_t) (value / quant.delta);
+    }
+
+    return quant;
+}
+
+float quant8_to_float(const quant8_t* quant) {
+    float16_t delta = quant->delta;
+    float     sum   = 0.0f;
+
+    for (size_t i = 0; i < quant->size; ++i) {
+        sum += quant->quants[i] * delta;
+    }
+
+    return sum;
+}
+
+quant4_t float_to_quant4(float value, size_t size) {
+    quant4_t quant;
+    quant.delta  = float_to_float16(value / (float) size);
+    quant.quants = (uint8_t*) malloc(size * sizeof(uint8_t));
+    quant.size   = size;
+
+    // Example quantization process (uniform quantization)
+    for (size_t i = 0; i < size; ++i) {
+        quant.quants[i] = (uint8_t) (value / quant.delta);
+    }
+
+    return quant;
+}
+
+float quant4_to_float(const quant4_t* quant) {
+    float16_t delta = quant->delta;
+    float     sum   = 0.0f;
+
+    for (size_t i = 0; i < quant->size; ++i) {
+        sum += quant->quants[i] * delta;
+    }
+
+    return sum;
+}
+
+void free_quant8(quant8_t* quant) {
+    free(quant->quants);
+}
+
+void free_quant4(quant4_t* quant) {
+    free(quant->quants);
+}
