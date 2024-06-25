@@ -1,49 +1,40 @@
 #include <stdint.h>
 
+typedef enum DataType {
+    TYPE_FLOAT_F32,
+    TYPE_FLOAT_F16,
+    TYPE_FLOAT_BF16,
+    TYPE_QUANT_K8,
+    TYPE_QUANT_K4,
+    TYPE_MAX_COUNT, // number of data types
+} data_t;
+
+// 32-bit floating point (standard float)
 typedef union Float32 {
+
     uint32_t as_bits;
     float    as_value;
 } float32_t;
 
-// google brain half-precision bfloat16
-typedef struct BFloat16 {
-    uint16_t bits;
-} bfloat16_t;
+// Google Brain half-precision bfloat16
+typedef uint16_t bfloat16_t;
 
+// Standard half-precision (IEEE 754)
 typedef uint16_t float16_t;
+
+// 8-bit quarter-precision (placeholder)
+typedef uint8_t quant8_t;
+
+// 4-bit eighth-precision (placeholder)
+// Here we might need to think differently as there's no native 4-bit type
+// and we might want to store two 4-bit values in one 8-bit variable.
+typedef uint8_t quant4_t;
 
 bfloat16_t float_to_bfloat16(float value);
 float      bfloat16_to_float(bfloat16_t bf16);
 
-/**
- * Converts a floating-point number in bit representation to its equivalent
- * as a float value.
- */
-float float_from_bits(uint32_t bits);
-
-/**
- * Converts a floating-point number from the float format to its bit
- * representation.
- */
-uint32_t float_to_bits(float value);
-
-/**
- * Converts a floating-point number in bit representation to its equivalent
- * as a float value.
- */
-float float_from_bits(uint32_t bits) {
-    union Float32 fp32 = {.as_bits = bits};
-    return fp32.as_value;
-}
-
-/**
- * Converts a floating-point number from the float format to its bit
- * representation.
- */
-uint32_t float_to_bits(float value) {
-    union Float32 fp32 = {.as_value = value};
-    return fp32.as_bits;
-}
+float16_t float_to_float16(float value);
+float     float16_to_float(float16_t value);
 
 bfloat16_t float_to_bfloat16(float value) {
     float32_t  f32;
@@ -51,7 +42,7 @@ bfloat16_t float_to_bfloat16(float value) {
 
     // Take the higher 16 bits of the float32 representation
     f32.as_value = value;
-    bf16.bits    = f32.as_bits >> 16;
+    bf16         = f32.as_bits >> 16;
 
     return bf16;
 }
