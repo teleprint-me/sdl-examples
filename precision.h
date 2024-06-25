@@ -3,6 +3,7 @@
 
 #include <assert.h>
 #include <stdint.h>
+#include <stdlib.h>
 
 typedef enum DataType {
     TYPE_FLOAT_F32,
@@ -25,29 +26,19 @@ typedef uint16_t bfloat16_t;
 // Standard half-precision (IEEE 754)
 typedef uint16_t float16_t;
 
-// 8-bit quarter-precision (placeholder)
-// typedef uint8_t quant8_t;
-#define QK8_0 32
-
+// 8-bit quarter-precision
 typedef struct {
     float16_t delta;
-    uint8_t   quants[QK8_0];
+    uint8_t*  quants; // Dynamically allocated array for quantized values
+    size_t    size;   // Number of quantized values
 } quant8_t;
 
-static_assert(sizeof(quant8_t) == sizeof(float16_t) + QK8_0, "wrong K8 block size/padding");
-
-// 4-bit eighth-precision (placeholder)
-// Here we might need to think differently as there's no native 4-bit type
-// and we might want to store two 4-bit values in one 8-bit variable.
-// typedef uint8_t quant4_t;
-#define QK4_0 16
-
+// 4-bit eighth-precision
 typedef struct {
     float16_t delta;
-    uint8_t   quants[QK4_0]; // nibbles
+    uint8_t*  quants; // Dynamically allocated array for quantized nibbles
+    size_t    size;   // Number of quantized nibbles
 } quant4_t;
-
-static_assert(sizeof(quant4_t) == sizeof(float16_t) + QK4_0, "wrong K4 block size/padding");
 
 bfloat16_t float_to_bfloat16(float value);
 float      bfloat16_to_float(bfloat16_t value);
@@ -55,10 +46,13 @@ float      bfloat16_to_float(bfloat16_t value);
 float16_t float_to_float16(float value);
 float     float16_to_float(float16_t value);
 
-quant8_t float_to_quant8(float value);
-float    quant8_to_float(quant8_t value);
+quant8_t float_to_quant8(float value, size_t size);
+float    quant8_to_float(const quant8_t* quant);
 
-quant4_t float_to_quant4(float value);
-float    quant4_to_float(quant4_t value);
+quant4_t float_to_quant4(float value, size_t size);
+float    quant4_to_float(const quant4_t* quant);
+
+void free_quant8(quant8_t* quant);
+void free_quant4(quant4_t* quant);
 
 #endif // PRECISION_H
