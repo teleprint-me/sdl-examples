@@ -62,3 +62,74 @@ float bfloat16_to_float(bfloat16_t bf16) {
     f32.as_bits = ((uint32_t) bf16.bits) << 16;
     return f32.as_value;
 }
+
+float16_t float_to_float16(float value) {
+    union Float32 f32;
+    f32.as_value = value;
+    uint32_t f   = f32.as_bits;
+
+    // Extract components
+    uint32_t sign     = (f >> 16) & 0x8000;            // mask: 32768
+    int32_t  exponent = ((f >> 23) & 0xFF) - 127 + 15; // mask: 255
+    uint32_t mantissa = (f >> 13) & 0x3FF;             // mask: 1023
+
+    if (exponent <= 0) {
+        if (exponent < -10) {
+            // Too small to be represented as a normalized half-float
+            return sign;
+        }
+        // Subnormal half-float
+        mantissa = (mantissa | 0x400) >> (1 - exponent); // flip: 1024
+        return sign | mantissa;
+    } else if (exponent == 0xFF - (127 - 15)) {
+        if (mantissa == 0) {
+            return sign | 0x7C00; // Inf
+        } else {
+            return sign | 0x7C00 | (mantissa >> 13); // NaN
+        }
+    } else if (exponent > 30) {
+        // Overflow to Inf
+        return sign | 0x7C00; // flip: 31744
+    }
+
+    // Normalized half-float
+    return sign | (exponent << 10) | mantissa;
+}
+
+float float16_to_float(float16_t value) {
+    uint32_t sign     = (value >> 15) & 0x00000001;
+    uint32_t exponent = (value >> 10) & 0x0000001F;
+    uint32_t mantissa = value & 0x000003FF;
+
+    uint32_t f;
+
+    if (exponent == 0) {
+        if (mantissa == 0) {
+            // Zero
+            f = sign << 31;
+        } else {
+            // Subnormal number
+            exponent = 1;
+            while ((mantissa & 0x00000400) == 0) {
+                mantissa <<= 1;
+                exponent--;
+            }
+            mantissa  &= ~0x00000400;
+            exponent   = exponent - 1 + 127;
+            mantissa <<= 13;
+            f          = (sign << 31) | (exponent << 23) | mantissa;
+        }
+    } else if (exponent == 31) {
+        // Inf or NaN
+        f = (sign << 31) | 0x7F800000 | (mantissa << 13);
+    } else {
+        // Normalized number
+        exponent = exponent - 15 + 127;
+        mantissa = mantissa << 13;
+        f        = (sign << 31) | (exponent << 23) | mantissa;
+    }
+
+    union Float32 f32;
+    f32.as_bits = f;
+    return f32.as_value;
+}
