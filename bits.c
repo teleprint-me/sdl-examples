@@ -11,7 +11,6 @@ typedef enum DataType {
 
 // 32-bit floating point (standard float)
 typedef union Float32 {
-
     uint32_t as_bits;
     float    as_value;
 } float32_t;
@@ -36,21 +35,39 @@ float      bfloat16_to_float(bfloat16_t bf16);
 float16_t float_to_float16(float value);
 float     float16_to_float(float16_t value);
 
+/**
+ * Converts float32 to bfloat16.
+ */
 bfloat16_t float_to_bfloat16(float value) {
-    float32_t  f32;
-    bfloat16_t bf16;
+    float32_t f32;
+    f32.as_value = value;
 
     // Take the higher 16 bits of the float32 representation
-    f32.as_value = value;
-    bf16         = f32.as_bits >> 16;
+    uint32_t bits = f32.as_bits;
 
-    return bf16;
+    // Handle NaN: force to quiet NaN
+    if ((bits & 0x7fffffff) > 0x7f800000) {
+        return (bits >> 16) | 0x0040;
+    }
+
+    // Handle subnormals: flush to zero
+    if ((bits & 0x7f800000) == 0) {
+        return (bits >> 16) & 0x8000;
+    }
+
+    // Rounding: round to nearest even
+    uint32_t rounding_bias = (bits & 0x0000ffff) > 0x00007fff    ? 1
+                             : (bits & 0x00018000) == 0x00018000 ? 1
+                                                                 : 0;
+    return (bits + rounding_bias) >> 16;
 }
 
+/**
+ * Converts bfloat16 to float32.
+ */
 float bfloat16_to_float(bfloat16_t bf16) {
     float32_t f32;
-    // Shift the bits back to their original position
-    f32.as_bits = ((uint32_t) bf16.bits) << 16;
+    f32.as_bits = (uint32_t) bf16 << 16;
     return f32.as_value;
 }
 
@@ -60,7 +77,7 @@ float bfloat16_to_float(bfloat16_t bf16) {
  * Converts a 32-bit float to a 16-bit half-precision float.
  */
 float16_t float_to_float16(float value) {
-    union Float32 f32;
+    float32_t f32;
     f32.as_value = value;
     uint32_t f   = f32.as_bits;
 
