@@ -63,6 +63,11 @@ float bfloat16_to_float(bfloat16_t bf16) {
     return f32.as_value;
 }
 
+// Conversion functions between float and float16
+
+/**
+ * Converts a 32-bit float to a 16-bit half-precision float.
+ */
 float16_t float_to_float16(float value) {
     union Float32 f32;
     f32.as_value = value;
@@ -96,6 +101,9 @@ float16_t float_to_float16(float value) {
     return sign | (exponent << 10) | mantissa;
 }
 
+/**
+ * Converts a 16-bit half-precision float to a 32-bit float.
+ */
 float float16_to_float(float16_t value) {
     uint32_t sign     = (value >> 15) & 0x00000001;
     uint32_t exponent = (value >> 10) & 0x0000001F;
