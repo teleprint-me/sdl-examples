@@ -15,6 +15,9 @@ project(SDL_Display_Backend_Detection)
 find_package(SDL2 REQUIRED)
 include_directories(${SDL2_INCLUDE_DIRS})
 
+# Add SDL2 library for linking
+add_link_options(-lSDL2)
+
 # Create executable
 add_executable(detect_backend main.c)
 
