@@ -1,9 +1,10 @@
-# SDL on Linux - Detecting Display Backend (X11 vs. Wayland)
-## Introduction
+## SDL on Linux - Detecting Display Backend (X11 vs. Wayland)
+
+### Introduction
 
 The Simple DirectMedia Layer (SDL) library is a powerful tool for developers creating cross-platform multimedia applications. It provides a robust framework for handling graphics, sound, and input across various operating systems, including Windows, macOS, and Linux. SDL is widely used in game development, emulation, and other multimedia applications. This document will focus on detecting the display backend (X11 or Wayland) on Linux systems using SDL.
 
-## Building SDL Projects with CMake
+### Building SDL Projects with CMake
 
 Building SDL projects on multiple platforms can be streamlined using CMake, a cross-platform build system generator. Below is an example `CMakeLists.txt` file that can be used to set up a basic SDL project. This configuration supports automated building processes, making it easier to manage dependencies and platform-specific settings.
 
@@ -25,7 +26,7 @@ add_executable(detect_backend main.c)
 target_link_libraries(detect_backend ${SDL2_LIBRARIES})
 ```
 
-## Detecting Display Backend (X11 vs. Wayland) in Linux Systems
+### Detecting Display Backend (X11 vs. Wayland) in Linux Systems
 
 Linux systems typically use either the X11 or Wayland display server protocols. Detecting which backend is in use can be crucial for optimizing performance and ensuring compatibility in multimedia applications. This can be done by checking specific environment variables.
 
@@ -72,7 +73,7 @@ int main(void) {
 }
 ```
 
-**Implementation Details**
+### Implementation Details
 
 The implementation involves checking the values of environment variables related to the display server. The program uses the `getenv` function to retrieve the values of `XDG_SESSION_TYPE`, `X11_DISPLAY`, and `WAYLAND_DISPLAY`.
 
@@ -80,6 +81,6 @@ The implementation involves checking the values of environment variables related
 - If `X11_DISPLAY` is set and `XDG_SESSION_TYPE` is "x11", the program prints "Using display backend: X11".
 - If neither condition is met, the program prints an error message indicating that it could not detect the display backend.
 
-**Conclusion**
+## Conclusion
 
 In this document, we've explored how to detect the display backend (X11 or Wayland) on Linux systems using SDL. We provided an example `CMakeLists.txt` file for building SDL projects and a sample program that checks environment variables to determine the display backend. This knowledge is crucial for developers looking to optimize their applications for different display servers on Linux.
