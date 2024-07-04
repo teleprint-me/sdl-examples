@@ -12,10 +12,14 @@ if (NOT CMAKE_BUILD_TYPE)
     set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release")
 endif()
 
+# Find SDL2
+find_package(SDL2 REQUIRED)
+include_directories(${SDL2_INCLUDE_DIRS})
+
 # Add SDL2 library for linking
 add_link_options(-lSDL2)
 
-# Add executable target
+# Add executable targets
 add_executable(simple simple.c)
 add_executable(line line.c)
 add_executable(drivers drivers.c)
