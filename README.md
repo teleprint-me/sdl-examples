@@ -33,7 +33,7 @@ The project has the following structure:
 
 1. **Clone the repository:**
     ```sh
-    git clone https://github.com/yourusername/sdl-examples.git
+    git clone https://github.com/teleprint-me/sdl-examples.git
     cd sdl-examples
     ```
 
