@@ -25,6 +25,7 @@ int main(int argc, char* argv[]) {
 
     // Iterate over and print the available video drivers
     for (int n = 0; n < n_drivers; n++) {
+        // Get and print the name of the video driver
         const char* driver_id = SDL_GetVideoDriver(n);
         fprintf(stdout, "Video driver %d: %s\n", n, driver_id);
     }
