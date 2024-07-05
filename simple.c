@@ -2,32 +2,53 @@
 #include <stdio.h>
 
 int main(int argc, char* argv[]) {
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
-        return 1;
+    // Initialize the SDL library
+    if (0 != SDL_Init(SDL_INIT_VIDEO)) {
+        printf("Error initializing SDL: %s\n", SDL_GetError());
+        return -1;
     }
 
+    // Create an application window
     SDL_Window* window = SDL_CreateWindow(
-        "SDL Example", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480, SDL_WINDOW_SHOWN
+        "SDL Example",           /* Title of the Window */
+        SDL_WINDOWPOS_UNDEFINED, /* Initial x position */
+        SDL_WINDOWPOS_UNDEFINED, /* Initial y position */
+        640,                     /* Width of window in pixels */
+        480,                     /* Height of window in pixels */
+        SDL_WINDOW_SHOWN         /* Flags - show the window when created */
     );
 
-    if (!window) {
+    // Check if the window was created successfully
+    if (NULL == window) {
         printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
         return 1;
     }
 
+    // Event handling setup
     SDL_Event event;
     int       quit = 0;
 
+    // Main loop
     while (0 == quit) {
+        // Handle pending events
         while (1 == SDL_PollEvent(&event)) {
-            if (SDL_QUIT == event.type) {
-                quit = 1;
-                break;
+            switch (event.type) {
+                case SDL_QUIT:
+                    quit = 1;
+                    break;
+
+                // Add more event cases as needed
+                default:
+                    break;
             }
         }
+
+        // Application logic goes here
+
+        // Update window content and render it
     }
 
+    // Cleanup
     SDL_DestroyWindow(window);
     SDL_Quit();
 
