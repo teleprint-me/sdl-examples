@@ -3,6 +3,9 @@
  *
  * reference: https://yuriygeorgiev.com/2022/08/17/polygon-based-software-rendering-engine/
  */
+
+#include "primitives.h"
+
 #include <SDL2/SDL.h>
 #include <math.h>
 #include <memory.h>
