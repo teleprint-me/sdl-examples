@@ -16,13 +16,14 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    SDL_Event e;
+    SDL_Event event;
     int       quit = 0;
 
-    while (!quit) {
-        while (SDL_PollEvent(&e) != 0) {
-            if (e.type == SDL_QUIT) {
+    while (0 != quit) {
+        while (0 != SDL_PollEvent(&event)) {
+            if (SDL_QUIT == event.type) {
                 quit = 1;
+                break;
             }
         }
     }
