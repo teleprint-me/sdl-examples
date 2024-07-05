@@ -15,7 +15,7 @@
 // Maximum number of polygons
 #define MAX_POLYGONS 10
 // Maximum number of vertices per polygon
-#define MAX_VERTICES 8
+#define MAX_VERTICES 8 // NOTE: Affects level design
 
 typedef struct Point2D {
     float x, y; // Coordinates of the point
