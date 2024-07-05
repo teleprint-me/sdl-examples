@@ -34,19 +34,19 @@ The DDA algorithm is an efficient way to draw a straight line between two points
     - Starting point: $(x_1, y_1) = (2, 3)$
     - Ending point: $(x_2, y_2) = (10, 8)$
 
-    We define a data structure representing a point.
+    1. We define a data structure representing a point.
 
-    ```c
-    typedef struct Point2D { // Coordinates of a point
-        float x;
-        float y;
-    } point2d_t;
-    ```
+        ```c
+        typedef struct Point { // Coordinates of a point
+            float x; // horizontal axis
+            float y; // vertical axis
+        } point_t;
+        ```
 
-    We then instantiate each structure representing a point.
+    2. We then instantiate each structure representing a point.
 
-    ```c
-    // Points (2, 3) and (10, 8) are arbitrary and mostly for illustrative purposes
-    point2d_t p1 = {2, 3};  // x_1, y_1
-    point2d_t p2 = {10, 8}; // x_2, y_2
-    ```
+        ```c
+        // Points (2, 3) and (10, 8) are arbitrary and mostly for illustrative purposes
+        point_t p1 = {2, 3};  // x_1, y_1
+        point_t p2 = {10, 8}; // x_2, y_2
+        ```
