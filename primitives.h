@@ -12,13 +12,29 @@
  * reference: https://yuriygeorgiev.com/2022/08/17/polygon-based-software-rendering-engine/
  */
 
+#ifndef PRIMITIVES_H
+#define PRIMITIVES_H
+
 // Maximum number of polygons
 #define MAX_POLYGONS 10
 // Maximum number of vertices per polygon
 #define MAX_VERTICES 8 // NOTE: Affects level design
 
-typedef struct Point2D {
-    float x, y; // Coordinates of the point
+typedef struct Color {
+    uint8_t red;
+    uint8_t green;
+    uint8_t blue;
+} color_t;
+
+// sdl already has this defined as SDL_FPoint in SDL_rect.h, but
+// we define our custom point type for educational purposes.
+// technically, these are substitutable and this just exposes
+// the interface. this doesn't really interest me though.
+// what does interest me is a custom float type, like half or quarter precision.
+// i wonder what it would be like to visually represent a vector of these types.
+typedef struct Point2D { // Coordinates of the point
+    float x;
+    float y;
 } point2d_t;
 
 typedef struct LineSegment {
@@ -33,8 +49,11 @@ typedef struct Polygon {
     float     distance;               // Distance from the camera or reference point
 } polygon_t;
 
-typedef struct PlaneProjection {
+// Projection of a quadrilateral onto a plane
+typedef struct ScreenSpaceQuadrilateral {
     point2d_t vertices[4]; // A quadrilateral has 4 vertices
     float     depth;       // Depth of the plane from the camera
     int       id;          // Identifier for the plane, used to store polygon info
-} plane_t;
+} screen_space_t;
+
+#endif // PRIMITIVES_H
