@@ -1,4 +1,6 @@
-/*
+/**
+ * @file display.c
+ *
  * Example program using Simple DirectMedia Layer (SDL) to determine which
  * display backend (X11 or Wayland) is being used on Linux systems.
  */

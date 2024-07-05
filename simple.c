@@ -1,3 +1,11 @@
+/**
+ * @file simple.c
+ *
+ * A simple introductory program demonstrating basic usage of the
+ * Simple DirectMedia Layer (SDL) library to create a window, handle events,
+ * and quit gracefully when needed.
+ */
+
 #include <SDL2/SDL.h>
 #include <stdio.h>
 
