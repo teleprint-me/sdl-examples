@@ -155,6 +155,7 @@
     "valarray": "cpp",
     "variant": "cpp",
     "csignal": "cpp",
-    "future": "cpp"
+    "future": "cpp",
+    "sdl.h": "c"
   }
 }
