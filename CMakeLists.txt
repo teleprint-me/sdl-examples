@@ -1,10 +1,9 @@
 # SDL for education and practice
 cmake_minimum_required(VERSION 3.17)
-project("sdl-examples" LANGUAGES CXX C)
+project("sdl-examples" LANGUAGES C)
 
 # Set the C and C++ standard versions
 set(CMAKE_C_STANDARD 17)
-set(CMAKE_CXX_STANDARD 17)
 
 # Default build type
 if (NOT CMAKE_BUILD_TYPE)
