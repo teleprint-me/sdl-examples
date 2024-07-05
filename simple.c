@@ -19,8 +19,8 @@ int main(int argc, char* argv[]) {
     SDL_Event event;
     int       quit = 0;
 
-    while (0 != quit) {
-        while (0 != SDL_PollEvent(&event)) {
+    while (0 == quit) {
+        while (1 == SDL_PollEvent(&event)) {
             if (SDL_QUIT == event.type) {
                 quit = 1;
                 break;
