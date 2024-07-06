@@ -92,3 +92,24 @@ We can calculate this in C as follows:
 ```c
 int steps = abs(delta_x) > abs(delta_y) ? abs(delta_x) : abs(delta_y);
 ```
+
+### 4. Calculate the increments for each step in $x$ and $y$
+
+The increments $x_{\text{increment}}$ and $y_{\text{increment}}$ are the changes in the $x$ and $y$ coordinates for each step. These increments determine how much to move in the $x$ and $y$ directions at each step to reach the next point on the line.
+
+$$y_{\text{increment}} = \frac{\Delta y}{\text{steps}}$$
+$$x_{\text{increment}} = \frac{\Delta x}{\text{steps}}$$
+
+Given $\Delta x = 4$ and $\Delta y = 5$, and $\text{steps} = 5$, we calculate the increments as follows:
+
+$$y_{\text{increment}} = \frac{5}{5} = 1$$
+$$x_{\text{increment}} = \frac{4}{5} = 0.8$$
+
+We can implement this in C as follows:
+
+```c
+float y_increment = delta_y / (float) steps;
+float x_increment = delta_x / (float) steps;
+```
+
+Note that we typecast `steps` to `float` to ensure the division yields a floating-point result. This step highlights a limitation of the DDA algorithm as it may lose precision during this phase of the process.
