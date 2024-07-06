@@ -179,7 +179,7 @@ For each step, the algorithm increments the $x$ and $y$ coordinates by $x_{incre
 $$
 \begin{aligned}
     \sum_{i = 0}^{steps}
-    \text{putpixel}({x + x_{increment}}, {y + y_{increment}})
+    \text{plot}({x + x_{increment}}, {y + y_{increment}})
 \end{aligned}
 $$
 
@@ -195,7 +195,7 @@ for (int i = 0; i <= steps; i++) {
 
 #### Additional Explanation
 
-The $\text{putpixel}$ function plots the current point on the screen. The $\text{current}$ point is then incremented by $x_{increment}$ and $y_{increment}$ for each step. This continues until the loop has run for the total number of steps calculated earlier.
+The $\text{plot}$ function plots the current point on the screen. The $\text{current}$ point is then incremented by $x_{increment}$ and $y_{increment}$ for each step. This continues until the loop has run for the total number of steps calculated earlier.
 
 $$
 \begin{aligned}
@@ -208,7 +208,7 @@ $$
 
 - **Incrementing the Coordinates**: The current $x$ and $y$ coordinates are incremented by the values of $x_{increment}$ and $y_{increment}$. This ensures that the points are spaced evenly along the line.
   
-- **Plotting the Points**: The $\text{putpixel}$ function is responsible for rendering the point on the screen. By converting floating-point coordinates to integers, it ensures compatibility with the SDL rendering function.
+- **Plotting the Points**: The $\text{plot}$ function is responsible for rendering the point on the screen. By converting floating-point coordinates to integers, it ensures compatibility with the SDL rendering function.
 
 ## Putting it all together
 
