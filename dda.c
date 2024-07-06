@@ -10,43 +10,47 @@
 #include <math.h>
 #include <stdio.h>
 
-// A structure representing a point
-// NOTE: We should use struct SDL_FPoint and use a custom point
-// for illustrative purposes.
+// NOTE: SDL has defined this as struct SDL_FPoint
+// We use a custom point for illustrative purposes.
+// A structure representing a floating point
 typedef struct FloatingPoint {
     float x;
     float y;
 } float_point_t;
 
-// NOTE: Same for integer types, e.g. SDL_Point
+// NOTE: SDL has defined this as struct SDL_Point
+// We use a custom point for illustrative purposes.
+// A structure representing an integer point
 typedef struct IntegerPoint {
     int x;
     int y;
 } int_point_t;
 
-// tolerance should be a default named parameter
-// where tolerance defaults to an argument of 0.5f
+// Function to round float values based on a given tolerance
 float float_round(float value, float tolerance) {
     return (value > (floor(value) + tolerance)) ? ceil(value) : floor(value);
 }
 
+// Function to calculate the maximum of two integer values
 int int_max(int x, int y) {
     return abs(x) > abs(y) ? abs(x) : abs(y);
 }
 
-// Don't use globals! Globals are bad!
-// Apply Separation of Concerns (SoC) instead.
-int put_pixel(SDL_Renderer* renderer, int_point_t point) {
-    // Draw a point on the current rendering target.
-    // SDL_RenderDrawPoint() draws a single point.
-    // If you want to draw multiple, use SDL_RenderDrawPoints() instead.
-    // Note that the function signature differs from rendering individual
-    // points and that this is just for illustrative purposes.
-    // 0 on success or a negative error code on failure;
-    // call SDL_GetError() for more information.
-    return SDL_RenderDrawPoint(renderer, point.x, point.y);
+// Function to draw a pixel at a given point using SDL (integer coordinates)
+int put_pixel(SDL_Renderer* renderer, float_point_t point) {
+    // Cast the pixel coordinates from float to int
+    int_point_t pixel = {
+        .y = float_round(point.y, 0.5f),
+        .x = float_round(point.x, 0.5f),
+    };
+    // The SDL_RenderDrawPoint only accepts integers
+    // Otherwise we must use the SDL_RenderDrawPointF function instead
+    // 0 on success or a negative error code on failure
+    // call SDL_GetError() for more information
+    return SDL_RenderDrawPoint(renderer, pixel.x, pixel.y);
 }
 
+// Function to draw a line using the DDA algorithm
 void dda_line(SDL_Renderer* renderer, float_point_t p_start, float_point_t p_end) {
     int_point_t delta = {
         .y = p_end.y - p_start.y,
@@ -60,15 +64,15 @@ void dda_line(SDL_Renderer* renderer, float_point_t p_start, float_point_t p_end
         .x = delta.x / (float) steps,
     };
 
-    int_point_t current = {
+    float_point_t current = {
         .y = p_start.y,
         .x = p_start.x,
     };
 
     for (int i = 0; i <= steps; i++) {
         put_pixel(renderer, current);
-        current.y += float_round(increment.y, 0.5f);
-        current.x += float_round(increment.x, 0.5f);
+        current.y += increment.y;
+        current.x += increment.x;
     }
 }
 
