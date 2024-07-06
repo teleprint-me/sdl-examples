@@ -75,20 +75,20 @@ int delta_y = p_end.y - p_start.y;
 int delta_x = p_end.x - p_start.x;
 ```
 
-3. **Determine the number of steps required to draw the line**:
+### 3. Determine the number of steps required to draw the line
 
-    The number of steps required to draw the line is determined by the maximum of the absolute values of $\Delta x$ and $\Delta y$. This ensures that we take enough steps to cover the entire line.
+The number of steps required to draw the line is determined by the maximum of the absolute values of $\Delta x$ and $\Delta y$. This ensures that we take enough steps to cover the entire line.
 
-    $$\text{steps} = \max(|\Delta x|, |\Delta y|)$$
+$$\text{steps} = \max(|\Delta x|, |\Delta y|)$$
 
-    We can calculate the steps as such by determining the maximum value between each change in position:
+Given $\Delta x = 4$ and $\Delta y = 5$, we calculate the steps as follows:
 
-    $$\text{steps} = \max(|4|, |5|) = 5$$
+$$\text{steps} = \max(|4|, |5|) = 5$$
 
-    This should be straightforward in the context of whole integers. This gets complicated once we attempt to do this with floating-point values. This is out-of-scope for now though (in another article).
+This calculation is straightforward with whole integers but can become more complex with floating-point values, which is beyond the scope of this article.
 
-    We can generally calculate this as the following in C:
+We can calculate this in C as follows:
 
-    ```c
-    int steps = abs(delta_x) > abs(delta_y) ? abs(delta_x) : abs(delta_y);
-    ```
+```c
+int steps = abs(delta_x) > abs(delta_y) ? abs(delta_x) : abs(delta_y);
+```
