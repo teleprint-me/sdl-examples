@@ -47,7 +47,7 @@ We then create instances of this structure for the starting and ending points:
 ```c
 // Example points for illustration
 point_t p_start = {0, 0};  // x_1, y_1
-point_t p_end = {4, 5}; // x_2, y_2
+point_t p_end   = {4, 5};  // x_2, y_2
 ```
 
 ### 2. Calculate the differences between the coordinates
