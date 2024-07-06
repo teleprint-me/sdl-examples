@@ -75,6 +75,8 @@ int delta_y = p_end.y - p_start.y;
 int delta_x = p_end.x - p_start.x;
 ```
 
+_Note that we type cast `delta_y` and `delta_x` from `float` to `int` to allow us to calculate the absolute values in order to allow us to determine the number of steps required to draw the line. This step highlights a limitation of the DDA algorithm as it may lose precision during this phase of the process._
+
 ### 3. Determine the number of steps required to draw the line
 
 The number of steps required to draw the line is determined by the maximum of the absolute values of $\Delta x$ and $\Delta y$. This ensures that we take enough steps to cover the entire line.
@@ -112,4 +114,4 @@ float y_increment = delta_y / (float) steps;
 float x_increment = delta_x / (float) steps;
 ```
 
-Note that we typecast `steps` to `float` to ensure the division yields a floating-point result. This step highlights a limitation of the DDA algorithm as it may lose precision during this phase of the process.
+_Note that we typecast `steps` back to `float` to ensure the division yields a floating-point result. This step, similar to when we calculated the differences between the coordinates, highlights a limitation of the DDA algorithm as it may lose precision during this phase of the process._
