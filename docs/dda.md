@@ -153,3 +153,91 @@ float_point_t increment = {
 ```
 
 _Note that we typecast `steps` back to `float` to ensure the division yields a floating-point result. This step, similar to when we calculated the differences between the coordinates, highlights a limitation of the DDA algorithm as it may lose precision during this phase of the process._
+
+### 5. Initialize the starting point $(x, y)$
+
+The starting point $(x, y)$ is initialized to the starting coordinates $(x_1, y_1)$.
+
+$$x_{\text{current}} = p_{\text{start}}.x$$
+$$y_{\text{current}} = p_{\text{start}}.y$$
+
+We initialize the current point to the starting point in our C code as follows:
+
+```c
+float_point_t current = {
+    .x = p_start.x,
+    .y = p_start.y,
+};
+```
+
+This sets the starting point of the line, from which the algorithm will begin incrementing to plot each point along the line.
+
+### 6. Loop through the number of steps, incrementing the current point and plotting it
+
+For each step, the algorithm increments the $x$ and $y$ coordinates by $x_{\text{increment}}$ and $y_{\text{increment}}$ respectively. The new point $(x, y)$ is then plotted. This process is repeated until all steps are completed, effectively drawing the line from the start point to the end point.
+
+$$
+\begin{aligned}
+    \sum_{i = 0}^{steps}
+    \text{put\_pixel}({x + x_{increment}}, {y + y_{increment}})
+\end{aligned}
+$$
+
+In our C code, we implement the loop to increment the current point and plot it as follows:
+
+```c
+for (int i = 0; i <= steps; i++) {
+    put_pixel(renderer, current);
+    current.x += increment.x;
+    current.y += increment.y;
+}
+```
+
+#### Additional Explanation
+
+The $\text{put\_pixel}$ function plots the current point on the screen. The $\text{current}$ point is then incremented by $x_{\text{increment}}$ and $y_{\text{increment}}$ for each step. This continues until the loop has run for the total number of steps calculated earlier.
+
+$$
+\begin{aligned}
+    \text{for } i = 0 \text{ to } \text{steps} \\
+    \quad x_{\text{current}} = x_{\text{current}} + x_{\text{increment}} \\
+    \quad y_{\text{current}} = y_{\text{current}} + y_{\text{increment}} \\
+    \quad \text{plot}(x_{\text{current}}, y_{\text{current}})
+\end{aligned}
+$$
+
+- **Incrementing the Coordinates**: The current $x$ and $y$ coordinates are incremented by the values of $x_{\text{increment}}$ and $y_{\text{increment}}$. This ensures that the points are spaced evenly along the line.
+  
+- **Plotting the Points**: The $\text{put\_pixel}$ function is responsible for rendering the point on the screen. By converting floating-point coordinates to integers, it ensures compatibility with the SDL rendering function.
+
+## Putting it all together
+
+### Pseudocode
+
+```c
+// Function to draw a line using the DDA algorithm
+void dda_line(SDL_Renderer* renderer, float_point_t p_start, float_point_t p_end) {
+    int_point_t delta = {
+        .y = p_end.y - p_start.y,
+        .x = p_end.x - p_start.x,
+    };
+
+    int steps = int_max(delta.x, delta.y);
+
+    float_point_t increment = {
+        .y = delta.y / (float) steps,
+        .x = delta.x / (float) steps,
+    };
+
+    float_point_t current = {
+        .y = p_start.y,
+        .x = p_start.x,
+    };
+
+    for (int i = 0; i <= steps; i++) {
+        put_pixel(renderer, current);
+        current.y += increment.y;
+        current.x += increment.x;
+    }
+}
+```
