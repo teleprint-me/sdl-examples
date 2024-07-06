@@ -18,33 +18,37 @@ The DDA (Digital Differential Analyzer) algorithm can be understood through seve
 
 This document aims to provide an accessible understanding of the DDA algorithm while connecting it to relevant mathematical concepts from various resources, such as Blitzer's *Introductory Algebra* and Wiley's *Applied Calculus*.
 
-### Algorithm Steps
+## Algorithm Steps
 
-1. **Input the coordinates of the starting $(x_1, y_1)$ and ending points $(x_2, y_2)$**:
+### 1. Input the coordinates of the start $(x_1, y_1)$ and end $(x_2, y_2)$ points
 
-   The algorithm begins by taking the coordinates of the two endpoints of the line segment. Let’s denote them as $(x_1, y_1)$ for the starting point and $(x_2, y_2)$ for the ending point.
+The algorithm begins by taking the coordinates of the two endpoints of the line segment. Let’s denote them as $(x_1, y_1)$ for the starting point and $(x_2, y_2)$ for the ending point.
 
-    - We define our parameters.
+#### Defining Our Parameters
 
-        - Define the starting point as $p_{start} = (x_1, y_1) = (0, 0)$
-        - Define the ending point as $p_{end} = (x_2, y_2) = (4, 5)$
+- **Starting Point**: Define the starting point as $p_{start} = (x_1, y_1) = (0, 0)$.
+- **Ending Point**: Define the ending point as $p_{end} = (x_2, y_2) = (4, 5)$.
 
-    - We define a data structure representing a point.
+#### Data Structure for Points
 
-        ```c
-        typedef struct Point { // Coordinates of a point
-            float x; // horizontal axis
-            float y; // vertical axis
-        } point_t;
-        ```
+We define a data structure representing a point to manage the coordinates of points:
 
-    - We then instantiate each structure representing a point.
+```c
+typedef struct Point { // Coordinates of a point
+    float x; // horizontal axis
+    float y; // vertical axis
+} point_t;
+```
 
-        ```c
-        // Points (2, 3) and (10, 8) are arbitrary and mostly for illustrative purposes
-        point_t p_start = {0, 0};  // x_1, y_1
-        point_t p_end = {4, 5}; // x_2, y_2
-        ```
+#### Instantiating Points
+
+We then create instances of this structure for the starting and ending points:
+
+```c
+// Example points for illustration
+point_t p_start = {0, 0};  // x_1, y_1
+point_t p_end = {4, 5}; // x_2, y_2
+```
 
 2. **Calculate the differences between the coordinates**:
 
