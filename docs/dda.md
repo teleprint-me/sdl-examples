@@ -95,6 +95,7 @@ The changes in $x$ and $y$ represent the horizontal and vertical distances betwe
 Given $(x_1, y_1) = (0.0f, 0.0f)$ and $(x_2, y_2) = (4.0f, 5.0f)$, we have:
 
 $$\Delta y = y_2 - y_1 = 5.0f - 0.0f = 5.0f$$
+
 $$\Delta x = x_2 - x_1 = 4.0f - 0.0f = 4.0f$$
 
 We can reason this as having a 2-dimensional plane where we move **right** by 4 units and **upward** by 5 units. The **Slope of the Line (m)** between these points is $\frac{Δy}{Δx} = \frac{5.0f}{4.0f}$ (or $1.25$).
@@ -133,11 +134,13 @@ int steps = abs(delta.x) > abs(delta.y) ? abs(delta.x) : abs(delta.y);
 The increments $y_{\text{increment}}$ and $x_{\text{increment}}$ are the changes in the $y$ and $x$ coordinates for each step. These increments determine how much to move in the $y$ and $x$ directions at each step to reach the next point on the line.
 
 $$y_{\text{increment}} = \frac{\Delta y}{\text{steps}}$$
+
 $$x_{\text{increment}} = \frac{\Delta x}{\text{steps}}$$
 
 Given $\Delta x = 4.0f$ and $\Delta y = 5.0f$, and $\text{steps} = 5$, we calculate the increments as follows:
 
 $$y_{\text{increment}} = \frac{5.0f}{5} = 1.0f$$
+
 $$x_{\text{increment}} = \frac{4.0f}{5} = 0.8f$$
 
 We can implement this in C as follows:
