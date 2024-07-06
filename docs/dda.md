@@ -22,23 +22,50 @@ This document aims to provide an accessible understanding of the DDA algorithm w
 
 ### 1. Input the coordinates of the start $(x_1, y_1)$ and end $(x_2, y_2)$ points
 
-The algorithm begins by taking the coordinates of the two endpoints of the line segment. Let’s denote them as $(x_1, y_1)$ for the starting point and $(x_2, y_2)$ for the ending point.
+The algorithm begins by taking the coordinates of the two endpoints of a line segment. Let’s denote them as $(x_1, y_1)$ for the starting point and $(x_2, y_2)$ for the ending point.
 
 #### Defining Our Parameters
 
 - **Starting Point**: Define the starting point as $p_{start} = (x_1, y_1) = (0, 0)$.
 - **Ending Point**: Define the ending point as $p_{end} = (x_2, y_2) = (4, 5)$.
 
-#### Data Structure for Points
+#### Data Structures for Points
 
-We define a data structure representing a point to manage the coordinates of points:
+We can define a data structure representing a point to manage the coordinates of points. 
+
+First we define a data structure representing points that contain precision, having a higher fidelity and range of expression.
 
 ```c
-typedef struct Point { // Coordinates of a point
+// NOTE: We should use struct SDL_FPoint.
+// We use a custom struct FloatPoint instead for illustrative purposes.
+typedef struct FloatPoint { // Coordinates of a point
     float x; // horizontal axis
     float y; // vertical axis
-} point_t;
+} float_point_t; // type alias
 ```
+
+Then we define a data structure representing points as integers, having a lower fidelity and range of expression.
+
+```c
+// NOTE: Same for integer types, e.g. SDL_Point
+typedef struct IntegerPoint {
+    int x;
+    int y;
+} int_point_t;
+```
+
+We use multiple structures because the DDA algorithm requires us to convert between data types and each structure is focused on that data type.
+
+```c
+// Note that we can use a union to map floating point values to integers
+// and vice-versa. This allows us to hot-swap values as needed.
+typedef union Float32 {
+    float value;
+    uint32_t bits;
+} float32_t;
+```
+
+For simplicity, we will use separate structures instead. I just thought this was a potential neat trick we might be able to utilize in other ways. Note that this is more complicated than it seems and it's full implementation is outside of the scope of this article.
 
 #### Instantiating Points
 
@@ -46,8 +73,8 @@ We then create instances of this structure for the starting and ending points:
 
 ```c
 // Example points for illustration
-point_t p_start = {0, 0};  // x_1, y_1
-point_t p_end   = {4, 5};  // x_2, y_2
+float_point_t p_start = {0.0f, 0.0f};  // x_1, y_1
+float_point_t p_end   = {4.0f, 5.0f};  // x_2, y_2
 ```
 
 ### 2. Calculate the differences between the coordinates
