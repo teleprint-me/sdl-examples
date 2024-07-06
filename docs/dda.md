@@ -174,12 +174,12 @@ This sets the starting point of the line, from which the algorithm will begin in
 
 ### 6. Loop through the number of steps, incrementing the current point and plotting it
 
-For each step, the algorithm increments the $x$ and $y$ coordinates by $x_{increment}$ and $y_{increment}$ respectively. The new point $(x, y)$ is then plotted. This process is repeated until all steps are completed, effectively drawing the line from the start point to the end point.
+For each step, the algorithm increments the $x$ and $y$ coordinates by $x_{increment}$ and $y_{increment}$ respectively. The new point $(x, y)$ is then plotted. This process repeats until all steps are completed, effectively drawing the line from the start point to the end point.
 
 $$
 \begin{aligned}
     \sum_{i = 0}^{steps}
-    \text{plot}({x + x_{increment}}, {y + y_{increment}})
+    \text{plot}(x + i \cdot x_{increment}, y + i \cdot y_{increment})
 \end{aligned}
 $$
 
@@ -187,7 +187,7 @@ In our C code, we implement the loop to increment the current point and plot it 
 
 ```c
 for (int i = 0; i <= steps; i++) {
-    put_pixel(renderer, current);
+    SDL_RenderDrawPointF(renderer, current.x, current.y);
     current.x += increment.x;
     current.y += increment.y;
 }
@@ -195,7 +195,7 @@ for (int i = 0; i <= steps; i++) {
 
 #### Additional Explanation
 
-The $\text{plot}$ function plots the current point on the screen. The $\text{current}$ point is then incremented by $x_{increment}$ and $y_{increment}$ for each step. This continues until the loop has run for the total number of steps calculated earlier.
+The `SDL_RenderDrawPointF` function plots the current point on the screen. The `current` point is then incremented by $x_{increment}$ and $y_{increment}$ for each step. This continues until the loop has run for the total number of steps calculated earlier.
 
 $$
 \begin{aligned}
@@ -208,36 +208,107 @@ $$
 
 - **Incrementing the Coordinates**: The current $x$ and $y$ coordinates are incremented by the values of $x_{increment}$ and $y_{increment}$. This ensures that the points are spaced evenly along the line.
   
-- **Plotting the Points**: The $\text{plot}$ function is responsible for rendering the point on the screen. By converting floating-point coordinates to integers, it ensures compatibility with the SDL rendering function.
+- **Plotting the Points**: The `SDL_RenderDrawPointF` function is responsible for rendering the point on the screen. By using the current floating-point coordinates directly, it ensures precision in the rendering process.
 
 ## Putting it all together
 
-### Pseudocode
+### Step-by-Step Explanation
+
+1. **Initialize the Endpoints**:
+   - **Define the start and end points**: Specify the coordinates of the start $(x_1, y_1)$ and end $(x_2, y_2)$ points.
+   - **Calculate differences**: Compute the differences in the x and y coordinates ($\Delta x$ and $\Delta y$).
+
+2. **Calculate Steps**:
+   - **Determine steps**: Calculate the number of steps needed to draw the line as the maximum of the absolute values of $\Delta x$ and $\Delta y$.
+
+3. **Calculate Increments**:
+   - **Compute increments**: Determine the incremental changes in the x and y coordinates for each step ($x_{increment}$ and $y_{increment}$).
+
+4. **Iterate and Plot**:
+   - **Initialize current point**: Start from the initial point.
+   - **Increment and plot**: Iteratively add the increments to the current point and plot the points until the end point is reached.
+
+### Code Implementation
+
+Here's a complete implementation of the DDA algorithm in C:
 
 ```c
-// Function to draw a line using the DDA algorithm
-void dda_line(SDL_Renderer* renderer, float_point_t p_start, float_point_t p_end) {
-    int_point_t delta = {
-        .y = p_end.y - p_start.y,
-        .x = p_end.x - p_start.x,
+// Example implementation of the Digital Differential Analyzer (DDA) algorithm
+void dda_line(SDL_Renderer *renderer, float_point_t p_start, float_point_t p_end) {
+    // Calculate delta values
+    float_point_t delta = {
+        .y = p_end.y - p_start.y, 
+        .x = p_end.x - p_start.x
     };
 
-    int steps = int_max(delta.x, delta.y);
+    // Calculate number of steps required
+    int steps = abs(delta.x) > abs(delta.y) ? abs(delta.x) : abs(delta.y);
 
+    // Calculate increment values
     float_point_t increment = {
         .y = delta.y / (float) steps,
-        .x = delta.x / (float) steps,
+        .x = delta.x / (float) steps
     };
 
+    // Initialize current position to the starting point
     float_point_t current = {
-        .y = p_start.y,
         .x = p_start.x,
+        .y = p_start.y,
     };
 
+    // Loop through and plot each point
     for (int i = 0; i <= steps; i++) {
-        put_pixel(renderer, current);
-        current.y += increment.y;
+        SDL_RenderDrawPointF(renderer, current.x, current.y);
         current.x += increment.x;
+        current.y += increment.y;
     }
 }
 ```
+
+### Integration with SDL
+
+To integrate this function into an SDL application, we need to initialize SDL, create a window and renderer, and then call the `dda_line` function within the rendering loop. Here’s a complete example:
+
+```c
+#include <SDL2/SDL.h>
+#include <stdio.h>
+
+// Define your float_point_t structure here
+
+// Include the dda_line function here
+
+int main(int argc, char *argv[]) {
+    // Initialize SDL
+    
+    // Create SDL window
+    
+    // Create SDL renderer
+
+    // Set the draw color to white
+
+    // Clear the window
+
+    // Define start and end points here
+
+    // Draw the line using the DDA algorithm
+
+    // Present the renderer
+
+    // Wait for a few seconds before quitting
+
+    // Cleanup
+
+    // Exit
+    return 0;
+}
+```
+
+This example initializes SDL, creates a window and renderer, and uses the `dda_line` function to draw a line between two points. The window displays the line for 5 seconds before quitting.
+
+## Conclusion
+
+The Digital Differential Analyzer (DDA) algorithm is a fundamental method for line drawing in computer graphics, offering a simple yet effective way to render lines. By understanding and implementing the DDA algorithm, we gain insight into how graphics systems translate mathematical descriptions into visual representations.
+
+This document outlines the steps to implement the DDA algorithm, emphasizing the mathematical concepts that underlie each step. By exploring these connections, we deepen our understanding of both the algorithm and the mathematical principles that support it.
+
+This document's approach serves as a valuable reference for learning and implementing the DDA algorithm, bridging the gap between theory and practical application in computer graphics.
