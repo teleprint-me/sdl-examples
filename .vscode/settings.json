@@ -156,6 +156,7 @@
     "variant": "cpp",
     "csignal": "cpp",
     "future": "cpp",
-    "sdl.h": "c"
+    "sdl.h": "c",
+    "math.h": "c"
   }
 }
