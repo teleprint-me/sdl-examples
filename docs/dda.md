@@ -31,13 +31,13 @@ The algorithm begins by taking the coordinates of the two endpoints of a line se
 
 #### Data Structures for Points
 
-We can define a data structure representing a point to manage the coordinates of points. 
+We can define a data structure representing a point to manage the coordinates of points.
 
 First we define a data structure representing points that contain precision, having a higher fidelity and range of expression.
 
 ```c
 // NOTE: We should use struct SDL_FPoint.
-// We use a custom struct FloatPoint instead for illustrative purposes.
+// For illustrative purposes, we will use our custom struct FloatPoint instead.
 typedef struct FloatPoint { // Coordinates of a point
     float x; // horizontal axis
     float y; // vertical axis
@@ -56,9 +56,13 @@ typedef struct IntegerPoint {
 
 We use multiple structures because the DDA algorithm requires us to convert between data types and each structure is focused on that data type.
 
+To simplify conversions, we can introduce a `union` called `Float32`, which can map floating-point values to integers (and vice versa) using the same memory location:
+
 ```c
-// Note that we can use a union to map floating point values to integers
-// and vice-versa. This allows us to hot-swap values as needed.
+// Note that we can use a union to map floating point values
+// to integers and vice-versa. This allows us to hot-swap
+// values as needed without creating separate structures or
+// performing explicit conversions when switching between them.
 typedef union Float32 {
     float value;
     uint32_t bits;
