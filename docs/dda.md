@@ -50,31 +50,30 @@ point_t p_start = {0, 0};  // x_1, y_1
 point_t p_end = {4, 5}; // x_2, y_2
 ```
 
-2. **Calculate the differences between the coordinates**:
+### 2. Calculate the differences between the coordinates
 
-    We define the **Slope of a Line** as the following:
+We define the **Slope of a Line** as follows:
 
-    $$\frac{Δx}{Δy} = \frac{x_2 - x_1}{y_2 - y_1}$$
+$$\text{slope} = \frac{Δy}{Δx} = \frac{y_2 - y_1}{x_2 - x_1}$$
 
-    The change in $x$ and $y$ represent the horizontal and vertical distances between the start and end points.
+The changes in $x$ and $y$ represent the horizontal and vertical distances between the start and end points.
 
-    - **The change in $x$ ($\Delta x$)** is defined as $\Delta x = x_2 - x_1$
-    - **The change in $y$ ($\Delta y$)** is defined as $\Delta y = y_2 - y_1$
-    
-    Given $(x_1, y_1) = (0, 0)$ and $(x_2, y_2) = (4, 5)$, we have
+- **Change in $y$ ($\Delta y$)** is defined as $\Delta y = y_2 - y_1$
+- **Change in $x$ ($\Delta x$)** is defined as $\Delta x = x_2 - x_1$
 
-    $$\frac{delta_{x}}{delta_{y}} = \frac{Δx}{Δy} = \frac{x_2 - x_1}{y_2 - y_1} = \frac{4-0}{5-0} = \boxed{\frac{4}{5}}$$
+Given $(x_1, y_1) = (0, 0)$ and $(x_2, y_2) = (4, 5)$, we have:
 
-    We can reason this as having a 2-dimensional plane that only allows us to move $\text{left}$, $\text{right}$, $\text{upward}$, or $\text{downward}$.
+$$\Delta y = y_2 - y_1 = 5 - 0 = 5$$
+$$\Delta x = x_2 - x_1 = 4 - 0 = 4$$
 
-    We step $4$ places to the $\text{right}$, then step $5$ places $\text{upward}$. The **Slope of a Line $m$** between these points is $\frac{4}{5}$ (or $0.8$).
+We can reason this as having a two-dimensional (2D) plane where we move **right** by 4 units and **upward** by 5 units. The **Slope of the Line (m)** between these points is $\frac{Δy}{Δx} = \frac{5}{4}$ (or $1.25$).
 
-    We can define the changes in the position of these points in C as the following:
+We can define the changes in the positions of these points in C as follows:
 
-    ```c
-    int delta_x = p_end.x - p_start.x;
-    int delta_y = p_end.y - p_start.y;
-    ```
+```c
+int delta_y = p_end.y - p_start.y;
+int delta_x = p_end.x - p_start.x;
+```
 
 3. **Determine the number of steps required to draw the line**:
 
