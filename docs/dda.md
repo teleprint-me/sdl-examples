@@ -33,7 +33,7 @@ The algorithm begins by taking the coordinates of the two endpoints of a line se
 
 We can define a data structure representing a point to manage the coordinates of points.
 
-First we define a data structure representing points that contain precision, having a higher fidelity and range of expression.
+First, we define a data structure representing points that use floating-point precision, offering higher fidelity and range of expression.
 
 ```c
 // NOTE: We should use struct SDL_FPoint.
@@ -44,7 +44,7 @@ typedef struct FloatPoint { // Coordinates of a point
 } float_point_t; // type alias
 ```
 
-Then we define a data structure representing points as integers, having a lower fidelity and range of expression.
+Then we define a data structure representing points as integers, offering lower fidelity and range of expression.
 
 ```c
 // NOTE: Same for integer types, e.g. SDL_Point
@@ -54,7 +54,7 @@ typedef struct IntegerPoint {
 } int_point_t;
 ```
 
-We use multiple structures because the DDA algorithm requires us to convert between data types and each structure is focused on that data type.
+We use multiple structures because the DDA algorithm requires us to convert between data types, and each structure focuses on that data type.
 
 To simplify conversions, we can introduce a `union` called `Float32`, which can map floating-point values to integers (and vice versa) using the same memory location:
 
@@ -69,7 +69,7 @@ typedef union Float32 {
 } float32_t;
 ```
 
-For simplicity, we will use separate structures instead. I just thought this was a potential neat trick we might be able to utilize in other ways. Note that this is more complicated than it seems and it's full implementation is outside of the scope of this article.
+For simplicity, we will use separate structures instead. I just thought this was a potential neat trick we might be able to utilize in other ways. Note that this is more complicated than it seems and its full implementation is outside the scope of this article.
 
 #### Instantiating Points
 
@@ -92,21 +92,23 @@ The changes in $x$ and $y$ represent the horizontal and vertical distances betwe
 - **Change in $y$ ($\Delta y$)** is defined as $\Delta y = y_2 - y_1$
 - **Change in $x$ ($\Delta x$)** is defined as $\Delta x = x_2 - x_1$
 
-Given $(x_1, y_1) = (0, 0)$ and $(x_2, y_2) = (4, 5)$, we have:
+Given $(x_1, y_1) = (0.0f, 0.0f)$ and $(x_2, y_2) = (4.0f, 5.0f)$, we have:
 
-$$\Delta y = y_2 - y_1 = 5 - 0 = 5$$
-$$\Delta x = x_2 - x_1 = 4 - 0 = 4$$
+$$\Delta y = y_2 - y_1 = 5.0f - 0.0f = 5.0f$$
+$$\Delta x = x_2 - x_1 = 4.0f - 0.0f = 4.0f$$
 
-We can reason this as having a two-dimensional (2D) plane where we move **right** by 4 units and **upward** by 5 units. The **Slope of the Line (m)** between these points is $\frac{Δy}{Δx} = \frac{5}{4}$ (or $1.25$).
+We can reason this as having a 2-dimensional plane where we move **right** by 4 units and **upward** by 5 units. The **Slope of the Line (m)** between these points is $\frac{Δy}{Δx} = \frac{5.0f}{4.0f}$ (or $1.25$).
 
 We can define the changes in the positions of these points in C as follows:
 
 ```c
-int delta_y = p_end.y - p_start.y;
-int delta_x = p_end.x - p_start.x;
+int_point_t delta = {
+    .y = p_end.y - p_start.y, 
+    .x = p_end.x - p_start.x
+};
 ```
 
-_Note that we type cast `delta_y` and `delta_x` from `float` to `int` to allow us to calculate the absolute values in order to allow us to determine the number of steps required to draw the line. This step highlights a limitation of the DDA algorithm as it may lose precision during this phase of the process._
+_Note that we type cast `delta_y` and `delta_x` from `float` to `int` to allow us to calculate the absolute values in order to determine the number of steps required to draw the line. This step highlights a limitation of the DDA algorithm as it may lose precision during this phase of the process._
 
 ### 3. Determine the number of steps required to draw the line
 
@@ -114,35 +116,37 @@ The number of steps required to draw the line is determined by the maximum of th
 
 $$\text{steps} = \max(|\Delta x|, |\Delta y|)$$
 
-Given $\Delta x = 4$ and $\Delta y = 5$, we calculate the steps as follows:
+Given $\Delta x = 4.0f$ and $\Delta y = 5.0f$, we calculate the steps as follows:
 
-$$\text{steps} = \max(|4|, |5|) = 5$$
+$$\text{steps} = \max(|4.0f|, |5.0f|) = 5$$
 
 This calculation is straightforward with whole integers but can become more complex with floating-point values, which is beyond the scope of this article.
 
 We can calculate this in C as follows:
 
 ```c
-int steps = abs(delta_x) > abs(delta_y) ? abs(delta_x) : abs(delta_y);
+int steps = abs(delta.x) > abs(delta.y) ? abs(delta.x) : abs(delta.y);
 ```
 
 ### 4. Calculate the increments for each step in $x$ and $y$
 
-The increments $x_{\text{increment}}$ and $y_{\text{increment}}$ are the changes in the $x$ and $y$ coordinates for each step. These increments determine how much to move in the $x$ and $y$ directions at each step to reach the next point on the line.
+The increments $y_{\text{increment}}$ and $x_{\text{increment}}$ are the changes in the $y$ and $x$ coordinates for each step. These increments determine how much to move in the $y$ and $x$ directions at each step to reach the next point on the line.
 
 $$y_{\text{increment}} = \frac{\Delta y}{\text{steps}}$$
 $$x_{\text{increment}} = \frac{\Delta x}{\text{steps}}$$
 
-Given $\Delta x = 4$ and $\Delta y = 5$, and $\text{steps} = 5$, we calculate the increments as follows:
+Given $\Delta x = 4.0f$ and $\Delta y = 5.0f$, and $\text{steps} = 5$, we calculate the increments as follows:
 
-$$y_{\text{increment}} = \frac{5}{5} = 1$$
-$$x_{\text{increment}} = \frac{4}{5} = 0.8$$
+$$y_{\text{increment}} = \frac{5.0f}{5} = 1.0f$$
+$$x_{\text{increment}} = \frac{4.0f}{5} = 0.8f$$
 
 We can implement this in C as follows:
 
 ```c
-float y_increment = delta_y / (float) steps;
-float x_increment = delta_x / (float) steps;
+float_point_t increment = {
+    .y = delta.y / (float) steps,
+    .x = delta.x / (float) steps
+};
 ```
 
 _Note that we typecast `steps` back to `float` to ensure the division yields a floating-point result. This step, similar to when we calculated the differences between the coordinates, highlights a limitation of the DDA algorithm as it may lose precision during this phase of the process._
