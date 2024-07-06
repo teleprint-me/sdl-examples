@@ -72,27 +72,27 @@ The DDA algorithm is an efficient way to draw a straight line between two points
 
     We step $4$ places to the $\text{right}$, then step $5$ places $\text{upward}$. The **Slope of a Line $m$** between these points is $\frac{4}{5}$ (or $0.8$).
 
-    We can draw each point in SDL using the following:
+    We can define the changes in the position of these points in C as the following:
 
     ```c
-    // Don't use globals! Globals are bad!
-    // Apply Separation of Concerns (SoC) instead.
-    int put_pixel(SDL_Renderer* renderer, point_t point) {
-        // Draw a point on the current rendering target.
-        // SDL_RenderDrawPoint() draws a single point.
-        // If you want to draw multiple, use SDL_RenderDrawPoints() instead.
-        // Note that the function signature differs from rendering individual 
-        // points and that this is just for illustrative purposes.
-        // 0 on success or a negative error code on failure;
-        // call SDL_GetError() for more information.
-        return SDL_RenderDrawPoint(renderer, point.x, point.y);
-    }
+    int delta_x = p_end.x - p_start.x;
+    int delta_y = p_end.y - p_start.y;
     ```
-
-    This definition will allow us to draw each individual point within a 2-dimensional plane.
 
 3. **Determine the number of steps required to draw the line**:
 
-   The number of steps required to draw the line is determined by the maximum of the absolute values of \(\Delta x\) and \(\Delta y\). This ensures that we take enough steps to cover the entire line.
+    The number of steps required to draw the line is determined by the maximum of the absolute values of $\Delta x$ and $\Delta y$. This ensures that we take enough steps to cover the entire line.
 
-   $$\text{steps} = \max(abs\Delta x|, |\Delta y|)$$
+    $$\text{steps} = \max(|\Delta x|, |\Delta y|)$$
+
+    We can calculate the steps as such by determining the maximum value between each change in position:
+
+    $$\text{steps} = \max(|4|, |5|) = 5$$
+
+    This should be straightforward in the context of whole integers. This gets complicated once we attempt to do this with floating-point values. This is out-of-scope for now though (in another article).
+
+    We can generally calculate this as the following in C:
+
+    ```c
+    int steps = abs(delta_x) > abs(delta_y) ? abs(delta_x) : abs(delta_y);
+    ```
