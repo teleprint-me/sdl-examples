@@ -245,7 +245,7 @@ void draw_line(SDL_Renderer* renderer, float_point_t start, float_point_t end) {
 
 ### Integration with SDL
 
-To integrate this function into an SDL application, we need to initialize SDL, create a window and renderer, and then call the `dda_line` function within the rendering loop. Here’s a complete example:
+To integrate this function into an SDL application, we need to initialize SDL, create a window and renderer, and then call the `draw_line` function within the rendering loop. Here’s a complete example:
 
 ```c
 #include <SDL2/SDL.h>
@@ -253,7 +253,7 @@ To integrate this function into an SDL application, we need to initialize SDL, c
 
 // Define your float_point_t structure here
 
-// Include the dda_line function here
+// Include the draw_line function here
 
 int main(int argc, char* argv[]) {
     // Initialize SDL
@@ -271,7 +271,7 @@ int main(int argc, char* argv[]) {
         480,
         SDL_WINDOW_SHOWN
     );
-    if (window == NULL) {
+    if (NULL == window) {
         fprintf(stderr, "SDL_CreateWindow Error: %s\n", SDL_GetError());
         SDL_Quit();
         return 1;
@@ -280,7 +280,7 @@ int main(int argc, char* argv[]) {
     // Create SDL renderer
     SDL_Renderer* renderer
         = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    if (renderer == NULL) {
+    if (NULL == renderer) {
         SDL_DestroyWindow(window);
         fprintf(stderr, "SDL_CreateRenderer Error: %s\n", SDL_GetError());
         SDL_Quit();
@@ -317,7 +317,7 @@ int main(int argc, char* argv[]) {
 }
 ```
 
-This example initializes SDL, creates a window and renderer, and uses the `dda_line` function to draw a line between two points. The window displays the line for 5 seconds before quitting.
+This example initializes SDL, creates a window and renderer, and uses the `draw_line` function to draw a line between two points. The window displays the line for 5 seconds before quitting.
 
 ## Conclusion
 
