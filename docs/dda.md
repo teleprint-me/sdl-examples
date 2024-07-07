@@ -26,50 +26,21 @@ The algorithm begins by taking the coordinates of the two endpoints of a line se
 
 #### Defining Our Parameters
 
-- **Starting Point**: Define the starting point as $p_{start} = (x_1, y_1) = (0, 0)$.
-- **Ending Point**: Define the ending point as $p_{end} = (x_2, y_2) = (4, 5)$.
+- **Starting Point**: Define the starting point as $start = (x_1, y_1) = (0, 0)$.
+- **Ending Point**: Define the ending point as $end = (x_2, y_2) = (4, 5)$.
 
 #### Data Structures for Points
 
-We can define a data structure representing a point to manage the coordinates of points.
+We define a data structure representing points that use floating-point precision. This provides higher fidelity and range of expression, which is particularly useful for rendering graphics accurately.
 
-First, we define a data structure representing points that use floating-point precision, offering higher fidelity and range of expression.
+> Note: While SDL provides an `SDL_FPoint` structure for this purpose, we will use our custom `FloatPoint` structure for illustration.
 
 ```c
-// NOTE: We should use struct SDL_FPoint.
-// For illustrative purposes, we will use our custom struct FloatPoint instead.
 typedef struct FloatPoint { // Coordinates of a point
     float x; // horizontal axis
     float y; // vertical axis
 } float_point_t; // type alias
 ```
-
-Then we define a data structure representing points as integers, offering lower fidelity and range of expression.
-
-```c
-// NOTE: Same for integer types, e.g. SDL_Point
-typedef struct IntegerPoint {
-    int x;
-    int y;
-} int_point_t;
-```
-
-We use multiple structures because the DDA algorithm requires us to convert between data types, and each structure focuses on that data type.
-
-To simplify conversions, we can introduce a `union` called `Float32`, which can map floating-point values to integers (and vice versa) using the same memory location:
-
-```c
-// Note that we can use a union to map floating point values
-// to integers and vice-versa. This allows us to hot-swap
-// values as needed without creating separate structures or
-// performing explicit conversions when switching between them.
-typedef union Float32 {
-    float value;
-    uint32_t bits;
-} float32_t;
-```
-
-For simplicity, we will use separate structures instead. I just thought this was a potential neat trick we might be able to utilize in other ways. Note that this is more complicated than it seems and its full implementation is outside the scope of this article.
 
 #### Instantiating Points
 
@@ -77,8 +48,8 @@ We then create instances of this structure for the starting and ending points:
 
 ```c
 // Example points for illustration
-float_point_t p_start = {0.0f, 0.0f};  // x_1, y_1
-float_point_t p_end   = {4.0f, 5.0f};  // x_2, y_2
+float_point_t start = {0.0f, 0.0f};  // x_1, y_1
+float_point_t end   = {4.0f, 5.0f};  // x_2, y_2
 ```
 
 ### 2. Calculate the differences between the coordinates
@@ -98,18 +69,17 @@ $$\Delta y = y_2 - y_1 = 5.0f - 0.0f = 5.0f$$
 
 $$\Delta x = x_2 - x_1 = 4.0f - 0.0f = 4.0f$$
 
-We can reason this as having a 2-dimensional plane where we move **right** by 4 units and **upward** by 5 units. The **Slope of the Line (m)** between these points is $\frac{Δy}{Δx} = \frac{5.0f}{4.0f}$ (or $1.25$).
+We can reason this as having a 2-dimensional plane where we move **right** by 4 units and **upward** by 5 units. The **Slope of the Line (m)** between these points is $\frac{Δy}{Δx} = \frac{5.0f}{4.0f}$ (or $1.25f$).
 
 We can define the changes in the positions of these points in C as follows:
 
 ```c
-int_point_t delta = {
-    .y = p_end.y - p_start.y, 
-    .x = p_end.x - p_start.x
+// Calculate delta values
+float_point_t delta = {
+    .y = end.y - start.y,
+    .x = end.x - start.x,
 };
 ```
-
-_Note that we type cast `delta_y` and `delta_x` from `float` to `int` to allow us to calculate the absolute values in order to determine the number of steps required to draw the line. This step highlights a limitation of the DDA algorithm as it may lose precision during this phase of the process._
 
 ### 3. Determine the number of steps required to draw the line
 
@@ -123,51 +93,63 @@ $$\text{steps} = \max(|4.0f|, |5.0f|) = 5$$
 
 This calculation is straightforward with whole integers but can become more complex with floating-point values, which is beyond the scope of this article.
 
-We can calculate this in C as follows:
+We can calculate this in C by defining a function to determine the steps:
 
 ```c
-int steps = abs(delta.x) > abs(delta.y) ? abs(delta.x) : abs(delta.y);
+// Function to calculate the maximum of two integer values
+int calculate_steps(float_point_t delta) {
+    // Explicitly type cast to an integer so we can set the limit
+    int x = (int) delta.x;
+    int y = (int) delta.y;
+    // Return the limit based on the point's axis with the greater absolute value
+    return abs(x) > abs(y) ? abs(x) : abs(y);
+}
+```
+
+In the main implementation, we use this function to calculate the steps:
+
+```c
+// Calculate the number of steps required
+int steps = calculate_steps(delta);
 ```
 
 ### 4. Calculate the increments for each step in $x$ and $y$
 
-The increments $y_{\text{increment}}$ and $x_{\text{increment}}$ are the changes in the $y$ and $x$ coordinates for each step. These increments determine how much to move in the $y$ and $x$ directions at each step to reach the next point on the line.
+The increments $y_{increment}$ and $x_{increment}$ are the changes in the $y$ and $x$ coordinates for each step. These increments determine how much to move in the $y$ and $x$ directions at each step to reach the next point on the line.
 
-$$y_{\text{increment}} = \frac{\Delta y}{\text{steps}}$$
+$$y_{increment} = \frac{\Delta y}{steps}$$
 
-$$x_{\text{increment}} = \frac{\Delta x}{\text{steps}}$$
+$$x_{increment} = \frac{\Delta x}{steps}$$
 
-Given $\Delta x = 4.0f$ and $\Delta y = 5.0f$, and $\text{steps} = 5$, we calculate the increments as follows:
+Given $\Delta x = 4.0f$, $\Delta y = 5.0f$, and $steps = 5$, we calculate the increments as follows:
 
-$$y_{\text{increment}} = \frac{5.0f}{5} = 1.0f$$
+$$y_{increment} = \frac{5.0f}{5} = 1.0f$$
 
-$$x_{\text{increment}} = \frac{4.0f}{5} = 0.8f$$
+$$x_{increment} = \frac{4.0f}{5} = 0.8f$$
 
 We can implement this in C as follows:
 
 ```c
+// Calculate increment values
 float_point_t increment = {
     .y = delta.y / (float) steps,
-    .x = delta.x / (float) steps
+    .x = delta.x / (float) steps,
 };
 ```
 
-_Note that we typecast `steps` back to `float` to ensure the division yields a floating-point result. This step, similar to when we calculated the differences between the coordinates, highlights a limitation of the DDA algorithm as it may lose precision during this phase of the process._
+_Note that we type cast `steps` back to `float` to ensure the division yields a floating-point result. This step, similar to when we calculated the differences between the coordinates, highlights a limitation of the DDA algorithm as it may lose precision during this phase of the process._
 
 ### 5. Initialize the starting point $(x, y)$
 
 The starting point $(x, y)$ is initialized to the starting coordinates $(x_1, y_1)$.
 
-$$x_{\text{current}} = p_{\text{start}}.x$$
-$$y_{\text{current}} = p_{\text{start}}.y$$
+$$x_{current} = start$$
 
 We initialize the current point to the starting point in our C code as follows:
 
 ```c
-float_point_t current = {
-    .x = p_start.x,
-    .y = p_start.y,
-};
+// Initialize current point to start point
+float_point_t current = start;
 ```
 
 This sets the starting point of the line, from which the algorithm will begin incrementing to plot each point along the line.
@@ -178,33 +160,27 @@ For each step, the algorithm increments the $x$ and $y$ coordinates by $x_{incre
 
 $$
 \begin{aligned}
-    \sum_{i = 0}^{steps}
-    \text{plot}(x + i \cdot x_{increment}, y + i \cdot y_{increment})
+    \sum_{i = 0}^{i \leq steps}
+    \text{plot}(x_i, y_i) \quad \text{where} \quad
+    \begin{cases}
+        x_{i+1} = x_i + x_{increment} \\
+        y_{i+1} = y_i + y_{increment}
+    \end{cases}
 \end{aligned}
 $$
 
 In our C code, we implement the loop to increment the current point and plot it as follows:
 
 ```c
+// Loop through and plot each point
 for (int i = 0; i <= steps; i++) {
     SDL_RenderDrawPointF(renderer, current.x, current.y);
-    current.x += increment.x;
     current.y += increment.y;
+    current.x += increment.x;
 }
 ```
 
-#### Additional Explanation
-
 The `SDL_RenderDrawPointF` function plots the current point on the screen. The `current` point is then incremented by $x_{increment}$ and $y_{increment}$ for each step. This continues until the loop has run for the total number of steps calculated earlier.
-
-$$
-\begin{aligned}
-    \text{for } i = 0 \text{ to } \text{steps} : \\
-    \quad x_{current} = x_{current} + x_{increment} \\
-    \quad y_{current} = y_{current} + y_{increment} \\
-    \quad \text{plot}(x_{current}, y_{current})
-\end{aligned}
-$$
 
 - **Incrementing the Coordinates**: The current $x$ and $y$ coordinates are incremented by the values of $x_{increment}$ and $y_{increment}$. This ensures that the points are spaced evenly along the line.
   
@@ -215,18 +191,23 @@ $$
 ### Step-by-Step Explanation
 
 1. **Initialize the Endpoints**:
-   - **Define the start and end points**: Specify the coordinates of the start $(x_1, y_1)$ and end $(x_2, y_2)$ points.
-   - **Calculate differences**: Compute the differences in the x and y coordinates ($\Delta x$ and $\Delta y$).
+   - **Define the start and end points**: Specify the coordinates of the start $(x_1, y_1)$ and end $(x_2, y_2)$ points using floating-point precision.
 
-2. **Calculate Steps**:
-   - **Determine steps**: Calculate the number of steps needed to draw the line as the maximum of the absolute values of $\Delta x$ and $\Delta y$.
+2. **Calculate Differences**:
+   - **Compute differences**: Determine $\Delta x$ and $\Delta y$, the changes in $x$ and $y$ coordinates between the start and end points.
 
-3. **Calculate Increments**:
-   - **Compute increments**: Determine the incremental changes in the x and y coordinates for each step ($x_{increment}$ and $y_{increment}$).
+3. **Calculate Steps**:
+   - **Determine steps**: Calculate the number of steps required to draw the line as the maximum of $|\Delta x|$ and $|\Delta y|$.
 
-4. **Iterate and Plot**:
-   - **Initialize current point**: Start from the initial point.
-   - **Increment and plot**: Iteratively add the increments to the current point and plot the points until the end point is reached.
+4. **Calculate Increments**:
+   - **Compute increments**: Calculate $x_{increment}$ and $y_{increment}$, the incremental changes in $x$ and $y$ coordinates per step.
+
+5. **Initialize and Plot**:
+   - **Initialize current point**: Set the starting point $(x_{current}, y_{current})$ to $(x_1, y_1)$.
+   - **Plot starting point**: Render the starting point on the screen.
+
+6. **Iterate and Plot**:
+   - **Increment and plot**: Iterate through each step, updating $(x_{current}, y_{current})$ by adding $x_{increment}$ and $y_{increment}$ respectively, and plot each updated point using `SDL_RenderDrawPointF`.
 
 ### Code Implementation
 
@@ -234,33 +215,30 @@ Here's a complete implementation of the DDA algorithm in C:
 
 ```c
 // Example implementation of the Digital Differential Analyzer (DDA) algorithm
-void dda_line(SDL_Renderer *renderer, float_point_t p_start, float_point_t p_end) {
+void draw_line(SDL_Renderer* renderer, float_point_t start, float_point_t end) {
     // Calculate delta values
     float_point_t delta = {
-        .y = p_end.y - p_start.y, 
-        .x = p_end.x - p_start.x
+        .y = end.y - start.y,
+        .x = end.x - start.x,
     };
 
-    // Calculate number of steps required
-    int steps = abs(delta.x) > abs(delta.y) ? abs(delta.x) : abs(delta.y);
+    // Calculate the number of steps required
+    int steps = calculate_steps(delta);
 
     // Calculate increment values
     float_point_t increment = {
         .y = delta.y / (float) steps,
-        .x = delta.x / (float) steps
+        .x = delta.x / (float) steps,
     };
 
-    // Initialize current position to the starting point
-    float_point_t current = {
-        .x = p_start.x,
-        .y = p_start.y,
-    };
+    // Initialize current point to start point
+    float_point_t current = start;
 
     // Loop through and plot each point
     for (int i = 0; i <= steps; i++) {
         SDL_RenderDrawPointF(renderer, current.x, current.y);
-        current.x += increment.x;
         current.y += increment.y;
+        current.x += increment.x;
     }
 }
 ```
@@ -277,28 +255,64 @@ To integrate this function into an SDL application, we need to initialize SDL, c
 
 // Include the dda_line function here
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[]) {
     // Initialize SDL
-    
+    if (SDL_Init(SDL_INIT_VIDEO) != 0) { // errors on truthy values
+        fprintf(stderr, "SDL_Init Error: %s\n", SDL_GetError());
+        return 1;
+    }
+
     // Create SDL window
-    
+    SDL_Window* window = SDL_CreateWindow(
+        "DDA Line Drawing",
+        SDL_WINDOWPOS_UNDEFINED,
+        SDL_WINDOWPOS_UNDEFINED,
+        640,
+        480,
+        SDL_WINDOW_SHOWN
+    );
+    if (window == NULL) {
+        fprintf(stderr, "SDL_CreateWindow Error: %s\n", SDL_GetError());
+        SDL_Quit();
+        return 1;
+    }
+
     // Create SDL renderer
+    SDL_Renderer* renderer
+        = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    if (renderer == NULL) {
+        SDL_DestroyWindow(window);
+        fprintf(stderr, "SDL_CreateRenderer Error: %s\n", SDL_GetError());
+        SDL_Quit();
+        return 1;
+    }
 
-    // Set the draw color to white
-
+    // Set the background to black
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     // Clear the window
+    SDL_RenderClear(renderer);
 
     // Define start and end points here
+    float_point_t start = {0.0f, 0.0f};     // x_1, y_1
+    float_point_t end   = {320.0f, 240.0f}; // x_2, y_2
 
-    // Draw the line using the DDA algorithm
+    // Set the line color to white
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+
+    // Draw the line using DDA algorithm
+    draw_line(renderer, start, end);
 
     // Present the renderer
+    SDL_RenderPresent(renderer);
 
     // Wait for a few seconds before quitting
+    SDL_Delay(5000);
 
     // Cleanup
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
 
-    // Exit
     return 0;
 }
 ```
