@@ -81,7 +81,7 @@ int main(int argc, char* argv[]) {
         480,
         SDL_WINDOW_SHOWN
     );
-    if (window == NULL) {
+    if (NULL == window) {
         fprintf(stderr, "SDL_CreateWindow Error: %s\n", SDL_GetError());
         SDL_Quit();
         return 1;
@@ -90,7 +90,7 @@ int main(int argc, char* argv[]) {
     // Create SDL renderer
     SDL_Renderer* renderer
         = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    if (renderer == NULL) {
+    if (NULL == renderer) {
         SDL_DestroyWindow(window);
         fprintf(stderr, "SDL_CreateRenderer Error: %s\n", SDL_GetError());
         SDL_Quit();
