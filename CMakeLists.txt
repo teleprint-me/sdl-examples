@@ -16,7 +16,7 @@ find_package(SDL2 REQUIRED)
 include_directories(${SDL2_INCLUDE_DIRS})
 
 # Add SDL2 library for linking
-add_link_options(-lSDL2)
+add_link_options(-lm -lSDL2)
 
 # Add executable targets
 add_executable(simple simple.c)
