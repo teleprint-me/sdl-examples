@@ -158,6 +158,7 @@
     "future": "cpp",
     "sdl.h": "c",
     "math.h": "c",
-    "stdio.h": "c"
+    "stdio.h": "c",
+    "sdl_events.h": "c"
   }
 }
