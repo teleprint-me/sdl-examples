@@ -3,7 +3,7 @@
  *
  * This file contains structures and functions to define and manipulate
  * geometric primitives such as points, line segments, polygons, and screen-space
- * representations of these primitives for a software rendering engine inspired by DOOM.
+ * representations of these primitives for a software rendering engine.
  *
  * The structures defined in this file represent the level information about walls:
  * their position, size, shape, height, and distance from the camera to enable 3D transformation
@@ -36,6 +36,31 @@ typedef struct Point2D { // Coordinates of the point
     float x;
     float y;
 } point2d_t;
+
+typedef struct Point3D {
+    float x;
+    float y;
+    float z;
+} point3d_t;
+
+// not sure if this is valid or even a good idea
+typedef union Point {
+    struct Point2D dim2; // postfixed by num of dims
+    struct Point3D dim3;
+} point_t;
+
+// n-dimensional vector space
+typedef struct Vector {
+    float* elements;
+    size_t size;
+};
+
+// n-dimensional matrix space
+typedef struct Matrix {
+    struct Vector* vertices;
+    size_t         n_rows;
+    size_t         n_cols;
+};
 
 typedef struct LineSegment {
     point2d_t start; // Starting point of the line segment
