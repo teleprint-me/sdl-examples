@@ -23,6 +23,11 @@
 #define MAX_POLYGONS 10
 #define MAX_VERTICES 8 // NOTE: Affects level design
 
+// 2D and 3D coordinates; for semantic legibility
+#define X            0
+#define Y            1
+#define Z            2
+
 typedef enum {
     SCALAR,   // value; a point
     VECTOR,   // n dimensions; a sequence of points
