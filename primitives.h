@@ -44,19 +44,25 @@ typedef struct {
 } color_t;
 
 // N-dimensional vector structure
+// Coordinates for a point in a line or plane
+// May also represent the magnitude and or direction of an object in a line or plane
 typedef struct {
     float* elements; // Dynamic array of elements
-    size_t size;     // Number of elements in the vector
+    size_t cols;     // The length of a vector
 } vector_t;
 
 // N-dimensional matrix structure
+// A matrix is a rectangular array of rows and columns representing a 2-dimensional space
 typedef struct {
-    float** elements; // 2D array representing the matrix elements
-    size_t  n_rows;   // Number of rows
-    size_t  n_cols;   // Number of columns
+    float* elements; // // Flat array representing the matrix elements
+    size_t rows;     // The height of a matrix
+    size_t cols;     // The length of a matrix
 } matrix_t;
 
 // N-dimensional tensor structure
+// A tensor is a rectangular prism where each element may be thought of as a cubic unit
+// A complex, multidimensional, representation of vectors and or matrices
+// Typically used to represent complex 2D and or 3D spaces and planes
 typedef struct {
     float*  elements;   // Flat array representing the tensor elements
     size_t* dimensions; // Array representing the size of each dimension
