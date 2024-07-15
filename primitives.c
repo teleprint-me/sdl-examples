@@ -1,6 +1,7 @@
 #include "primitives.h"
 
 #include <stdio.h>
+#include <string.h>
 
 // Vector operations
 vector_t* create_vector(size_t size) {
@@ -39,8 +40,58 @@ void free_vector(vector_t* vector) {
 }
 
 // Matrix operations
-matrix_t create_matrix(size_t n_rows, size_t n_cols);
-void     free_matrix(matrix_t* matrix);
+matrix_t* create_matrix(size_t n_rows, size_t n_cols) {
+    matrix_t* matrix = (matrix_t*) malloc(sizeof(matrix_t));
+    if (NULL == matrix) {
+        fprintf(stderr, "Failed to allocate memory for matrix_t.\n");
+        return NULL;
+    }
+
+    matrix->elements = (float**) malloc(n_rows * sizeof(float*));
+    if (NULL == matrix->elements) {
+        fprintf(stderr, "Failed to allocate memory for matrix rows.\n");
+        free(matrix);
+        return NULL;
+    }
+
+    for (size_t i = 0; i < n_rows; ++i) {
+        matrix->elements[i] = (float*) malloc(n_cols * sizeof(float));
+        if (NULL == matrix->elements[i]) {
+            fprintf(stderr, "Failed to allocate memory for matrix columns.\n");
+            // Free previously allocated rows
+            for (size_t j = 0; j < i; ++j) {
+                free(matrix->elements[j]);
+            }
+            free(matrix->elements);
+            free(matrix);
+            return NULL;
+        }
+        memset(matrix->elements[i], 0, n_cols * sizeof(float));
+    }
+
+    matrix->n_rows = n_rows;
+    matrix->n_cols = n_cols;
+
+    return matrix;
+}
+
+void free_matrix(matrix_t* matrix) {
+    if (NULL == matrix) {
+        fprintf(stderr, "Cannot free a NULL matrix.\n");
+        return;
+    }
+
+    if (NULL != matrix->elements) {
+        for (size_t i = 0; i < matrix->n_rows; ++i) {
+            if (NULL != matrix->elements[i]) {
+                free(matrix->elements[i]);
+            }
+        }
+        free(matrix->elements);
+    }
+
+    free(matrix);
+}
 
 // Tensor operations
 tensor_t create_tensor(size_t* dimensions, rank_t rank);
