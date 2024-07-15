@@ -12,7 +12,8 @@ This section outlines the basic geometric shapes and structures used in our soft
 
 - **Visualization**: 
   - **Vector**: A list of values.
-    $$ \vec{v} = \begin{bmatrix} v_1 & v_2 & \cdots & v_m \end{bmatrix} $$
+
+$$ \vec{v} = \begin{bmatrix} v_1 & v_2 & \cdots & v_m \end{bmatrix} $$
 
 - **Data structure**:
   - `vector_t` struct containing an array of float elements representing the coordinates and the size of the vector.
@@ -43,7 +44,8 @@ This section outlines the basic geometric shapes and structures used in our soft
 
 - **Visualization**: 
   - **Matrix**: A grid of values.
-    $$ \mathbf{M} = \begin{bmatrix} m_{11} & m_{12} \\ m_{21} & m_{22} \end{bmatrix} $$
+
+$$ \mathbf{M} = \begin{bmatrix} m_{11} & m_{12} \\ m_{21} & m_{22} \end{bmatrix} $$
 
 - **Data structure**:
   - `matrix_t` struct containing a flat array of float elements representing the matrix and the dimensions of the matrix (rows and columns).
@@ -76,12 +78,13 @@ This section outlines the basic geometric shapes and structures used in our soft
 - **Visualization**: 
   - **Tensor**: A cube or hypercube of values.
     - Example for a 3D tensor:
-    $$
-    \mathcal{T} = \begin{bmatrix}
-    \begin{bmatrix} t_{111} & t_{112} \\ t_{121} & t_{122} \end{bmatrix} \\
-    \begin{bmatrix} t_{211} & t_{212} \\ t_{221} & t_{222} \end{bmatrix}
-    \end{bmatrix}
-    $$
+
+$$
+\mathcal{T} = \begin{bmatrix}
+\begin{bmatrix} t_{111} & t_{112} \\ t_{121} & t_{122} \end{bmatrix} \\
+\begin{bmatrix} t_{211} & t_{212} \\ t_{221} & t_{222} \end{bmatrix}
+\end{bmatrix}
+$$
 
 - **Data structure**:
   - `tensor_t` struct containing a flat array of float elements representing the tensor, an array representing the size of each dimension, and the rank (number of dimensions) of the tensor.
