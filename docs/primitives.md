@@ -45,7 +45,12 @@ $$ \vec{v} = \begin{bmatrix} v_1 & v_2 & \cdots & v_m \end{bmatrix} $$
 - **Visualization**: 
   - **Matrix**: A grid of values.
 
-$$ \mathbf{M} = \begin{bmatrix} m_{11} & m_{12} \\ m_{21} & m_{22} \end{bmatrix} $$
+$$
+\mathbf{M} = \begin{bmatrix} 
+m_{11} & m_{12} \\
+m_{21} & m_{22}
+\end{bmatrix}
+$$
 
 - **Data structure**:
   - `matrix_t` struct containing a flat array of float elements representing the matrix and the dimensions of the matrix (rows and columns).
