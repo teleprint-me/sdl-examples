@@ -197,18 +197,21 @@ void free_line(line_t* line) {
 polygon_t* create_polygon(size_t max_vertices) {
     polygon_t* polygon = (polygon_t*) malloc(sizeof(polygon_t));
     if (NULL == polygon) {
-        fprintf(stderr, "Failed to allocate memory for polygon_t.\n");
+        fprintf(stderr, "Failed to allocate memory for polygon_t structure.\n");
         return NULL;
     }
 
     polygon->vertices = create_vector(max_vertices);
     if (NULL == polygon->vertices) {
-        fprintf(stderr, "Failed to allocate memory for polygonal vertices.\n");
+        fprintf(stderr, "Failed to allocate memory for polygon vertices.\n");
         free(polygon);
         return NULL;
     }
 
     polygon->max_vertices = max_vertices;
+    polygon->count        = 0;    // Initialize count of vertices
+    polygon->height       = 0.0f; // Default height
+    polygon->distance     = 0.0f; // Default distance
 
     return polygon;
 }
