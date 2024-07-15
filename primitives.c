@@ -177,6 +177,11 @@ line_t* create_line(size_t size) {
 }
 
 void free_line(line_t* line) {
+    if (NULL == line) {
+        fprintf(stderr, "Cannot free a NULL line");
+        return;
+    }
+
     if (line->start) {
         free(line->start);
     }
@@ -185,9 +190,7 @@ void free_line(line_t* line) {
         free(line->end);
     }
 
-    if (NULL != line) {
-        free(line);
-    }
+    free(line);
 }
 
 // Polygon operations
