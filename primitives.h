@@ -65,8 +65,8 @@ typedef struct {
 
 // Line segment structure
 typedef struct {
-    vector_t start; // Starting point of the line segment
-    vector_t end;   // Ending point of the line segment
+    vector_t* start; // Starting point of the line segment
+    vector_t* end;   // Ending point of the line segment
 } line_t;
 
 // Polygon structure
