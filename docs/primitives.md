@@ -20,15 +20,28 @@ This section outlines the basic geometric shapes and structures used in our soft
 
 ## Matrices (matrix_t)
 
-- **Definition**: TODO
+- **Definition**: Matrices are rectangular arrays of numbers, symbols, or expressions, arranged in rows and columns. In the context of computer graphics, matrices are primarily used for transformations such as translation, rotation, scaling, and perspective projection.
 
-- **Data structure**: TODO
+- **Data structure**:
+  - `matrix_t` struct containing the number of rows and columns, and a pointer to a dynamically allocated array of float elements representing the matrix elements.
+
+  ```c
+  typedef struct {
+      float* elements; // Dynamic array of elements
+      size_t rows;     // Number of rows in the matrix
+      size_t cols;     // Number of columns in the matrix
+  } matrix_t;
+  ```
+
+- **Usage**: Matrices are used for various transformations in 2D and 3D space. They can represent transformations like translation, rotation, scaling, and projection, and are essential for transforming coordinates from model space to world space and finally to screen space.
 
 ## Tensors (tensor_t)
 
 - **Definition**: TODO
 
 - **Data structure**: TODO
+
+- **Usage**: TODO
 
 ## Line Segments (line_t)
 
