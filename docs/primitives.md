@@ -19,14 +19,20 @@ This section outlines the basic geometric shapes and structures used in our soft
 - **Usage**: Vectors are the building blocks for more complex representations such as shapes like lines, polygons, and screen space representations.
 
 ## Matrices (matrix_t)
-TODO
+
+- **Definition**: TODO
+
+- **Data structure**: TODO
 
 ## Tensors (tensor_t)
-TODO
+
+- **Definition**: TODO
+
+- **Data structure**: TODO
 
 ## Line Segments (line_t)
 
-- **Definition**: Connects two vertices using a straight line. This is also formerly referred to as an edge when one or more lines are connected by at least a single vertex.
+- **Definition**: Connects two vertices using a straight line. This is also formally referred to as an edge when one or more lines are connected by at least a single vertex.
 
 - **Data structure**:
   - `line_t` struct containing start and end points represented as vectors.
