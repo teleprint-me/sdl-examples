@@ -71,11 +71,11 @@ typedef struct {
 
 // Polygon structure
 typedef struct {
-    vector_t* vertices; // Array of vertices
-    size_t    max;      // Max number of vertices; Note this affects level design
-    size_t    count;    // Number of vertices within the polygon
-    float     height;   // Height of the polygon (for 3D effects)
-    float     distance; // Distance from the camera or reference point
+    vector_t* vertices;     // Array of vertices
+    size_t    max_vertices; // Max number of vertices; Note this affects level design
+    size_t    count;        // Number of vertices within the polygon
+    float     height;       // Height of the polygon (for 3D effects)
+    float     distance;     // Distance from the camera or reference point
 } polygon_t;
 
 // Screen-space quadrilateral structure

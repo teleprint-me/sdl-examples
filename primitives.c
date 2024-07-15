@@ -194,8 +194,37 @@ void free_line(line_t* line) {
 }
 
 // Polygon operations
-polygon_t create_polygon(size_t max_vertices);
-void      free_polygon(polygon_t* polygon);
+polygon_t* create_polygon(size_t max_vertices) {
+    polygon_t* polygon = (polygon_t*) malloc(sizeof(polygon_t));
+    if (NULL == polygon) {
+        fprintf(stderr, "Failed to allocate memory for polygon_t.\n");
+        return NULL;
+    }
+
+    polygon->vertices = create_vector(max_vertices);
+    if (NULL == polygon->vertices) {
+        fprintf(stderr, "Failed to allocate memory for polygonal vertices.\n");
+        free(polygon);
+        return NULL;
+    }
+
+    polygon->max_vertices = max_vertices;
+
+    return polygon;
+}
+
+void free_polygon(polygon_t* polygon) {
+    if (NULL == polygon) {
+        fprintf(stderr, "Cannot free a NULL polygon.\n");
+        return;
+    }
+
+    if (polygon->vertices) {
+        free_vector(polygon->vertices);
+    }
+
+    free(polygon);
+}
 
 // Screen-space quadrilateral operations
 screen_space_t create_screen_space(size_t max_vertices);
