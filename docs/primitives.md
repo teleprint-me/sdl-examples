@@ -4,44 +4,106 @@ This section outlines the basic geometric shapes and structures used in our soft
 
 ## Vectors (vector_t)
 
-- **Definition**: The coordinates representing a point in 2D or 3D space. This is commonly referred to as a vertex if one or more edges are connected.
+- **Definition**: A vector is a 1-dimensional array of numbers representing a point in space, direction, or magnitude.
+
+- **Characteristics**:
+  - A vector has only one dimension, consisting of multiple columns.
+  - Represents quantities such as direction, velocity, or position in space.
+
+- **Visualization**: 
+  - **Vector**: A list of values.
+    $$ \vec{v} = \begin{bmatrix} v_1 & v_2 & \cdots & v_m \end{bmatrix} $$
 
 - **Data structure**:
   - `vector_t` struct containing an array of float elements representing the coordinates and the size of the vector.
 
   ```c
+  // N-dimensional vector structure
+  // Coordinates for a point in a line or plane
+  // May also represent the magnitude and or direction of an object in a line or plane
   typedef struct {
       float* elements; // Dynamic array of elements
-      size_t size;     // Number of elements in the vector
+      size_t cols;     // The length of a vector
   } vector_t;
   ```
 
-- **Usage**: Vectors are the building blocks for more complex representations such as shapes like lines, polygons, and screen space representations.
+- **Key Concepts**:
+  - **Vector**:
+    - Single dimension (1D array).
+    - `size_t cols` represents the number of elements.
+    - Useful for representing points, directions, or magnitudes.
 
 ## Matrices (matrix_t)
 
-- **Definition**: Matrices are rectangular arrays of numbers, symbols, or expressions, arranged in rows and columns. In the context of computer graphics, matrices are primarily used for transformations such as translation, rotation, scaling, and perspective projection.
+- **Definition**: A matrix is a 2-dimensional array of numbers arranged in rows and columns.
+
+- **Characteristics**:
+  - A matrix has two dimensions: rows and columns.
+  - Used for linear transformations, systems of linear equations, and various applications in mathematics and computer science.
+
+- **Visualization**: 
+  - **Matrix**: A grid of values.
+    $$ \mathbf{M} = \begin{bmatrix} m_{11} & m_{12} \\ m_{21} & m_{22} \end{bmatrix} $$
 
 - **Data structure**:
-  - `matrix_t` struct containing the number of rows and columns, and a pointer to a dynamically allocated array of float elements representing the matrix elements.
+  - `matrix_t` struct containing a flat array of float elements representing the matrix and the dimensions of the matrix (rows and columns).
 
   ```c
+  // N-dimensional matrix structure
+  // A matrix is a rectangular array of rows and columns representing a 2-dimensional space
   typedef struct {
-      float* elements; // Dynamic array of elements
-      size_t rows;     // Number of rows in the matrix
-      size_t cols;     // Number of columns in the matrix
+      float* elements; // Flat array representing the matrix elements
+      size_t rows;     // The height of a matrix
+      size_t cols;     // The length of a matrix
   } matrix_t;
   ```
 
-- **Usage**: Matrices are used for various transformations in 2D and 3D space. They can represent transformations like translation, rotation, scaling, and projection, and are essential for transforming coordinates from model space to world space and finally to screen space.
+- **Key Concepts**:
+  - **Matrix**:
+    - Two dimensions (2D array).
+    - `size_t rows` and `size_t cols` represent the dimensions.
+    - Useful for linear transformations and systems of equations.
 
 ## Tensors (tensor_t)
 
-- **Definition**: TODO
+- **Definition**: A tensor is a multi-dimensional array that generalizes scalars (0D), vectors (1D), and matrices (2D) to higher dimensions, often used to represent data in three or more dimensions.
 
-- **Data structure**: TODO
+- **Characteristics**:
+  - A tensor can represent data in 1D (vector), 2D (matrix), or 3D and higher dimensions.
+  - Commonly used in fields like physics, engineering, and machine learning to represent complex data structures and higher-dimensional spaces.
+  - In a 3D context, a tensor can be thought of as a cubic space containing height (rows), length (columns), and width (depth), often used to represent spatial and temporal data.
 
-- **Usage**: TODO
+- **Visualization**: 
+  - **Tensor**: A cube or hypercube of values.
+    - Example for a 3D tensor:
+    $$
+    \mathcal{T} = \begin{bmatrix}
+    \begin{bmatrix} t_{111} & t_{112} \\ t_{121} & t_{122} \end{bmatrix} \\
+    \begin{bmatrix} t_{211} & t_{212} \\ t_{221} & t_{222} \end{bmatrix}
+    \end{bmatrix}
+    $$
+
+- **Data structure**:
+  - `tensor_t` struct containing a flat array of float elements representing the tensor, an array representing the size of each dimension, and the rank (number of dimensions) of the tensor.
+
+  ```c
+  // N-dimensional tensor structure
+  // A tensor is a rectangular prism where each element may be thought of as a cubic unit
+  // A complex, multidimensional, representation of vectors and or matrices
+  // Typically used to represent complex 2D and or 3D spaces and planes
+  typedef struct {
+      float*  elements;   // Flat array representing the tensor elements
+      size_t* dimensions; // Array representing the size of each dimension
+      size_t  rank;       // Number of dimensions
+  } tensor_t;
+  ```
+
+- **Key Concepts**:
+  - **Tensor**:
+    - Multi-dimensional (nD array).
+    - `size_t* dimensions` represents the size of each dimension.
+    - `size_t rank` represents the number of dimensions.
+    - Useful for representing complex data structures and higher-dimensional spaces.
 
 ## Line Segments (line_t)
 
