@@ -44,9 +44,6 @@ typedef struct {
 } color_t;
 
 // N-dimensional vector structure
-// Note that a vector represents a set of coordinate points
-// It may also represent magnitude and direction
-// The semantic meaning becomes context dependent
 typedef struct {
     float* elements; // Dynamic array of elements
     size_t size;     // Number of elements in the vector
@@ -92,28 +89,28 @@ typedef struct {
 
 // Function prototypes
 
-// Line segment operations
-line_t create_line(size_t size);
-void   free_line(line_t* line);
-
-// Polygon operations
-polygon_t create_polygon(size_t max_vertices);
-void      free_polygon(polygon_t* polygon);
-
-// Screen-space quadrilateral operations
-screen_space_t create_screen_space(size_t max_vertices);
-void           free_screen_space(screen_space_t* quad);
-
 // Vector operations
-vector_t create_vector(size_t size);
-void     free_vector(vector_t* vector);
+vector_t* create_vector(size_t size);
+void      free_vector(vector_t* vector);
 
 // Matrix operations
-matrix_t create_matrix(size_t n_rows, size_t n_cols);
-void     free_matrix(matrix_t* matrix);
+matrix_t* create_matrix(size_t n_rows, size_t n_cols);
+void      free_matrix(matrix_t* matrix);
 
 // Tensor operations
-tensor_t create_tensor(size_t* dimensions, rank_t rank);
-void     free_tensor(tensor_t* tensor);
+tensor_t* create_tensor(size_t* dimensions, rank_t rank);
+void      free_tensor(tensor_t* tensor);
+
+// Line segment operations
+line_t* create_line(size_t size);
+void    free_line(line_t* line);
+
+// Polygon operations
+polygon_t* create_polygon(size_t max_vertices);
+void       free_polygon(polygon_t* polygon);
+
+// Screen-space quadrilateral operations
+screen_space_t* create_screen_space(size_t max_vertices);
+void            free_screen_space(screen_space_t* quad);
 
 #endif // PRIMITIVES_H
