@@ -80,11 +80,11 @@ typedef struct {
 
 // Screen-space quadrilateral structure
 typedef struct {
-    vector_t* vertices; // Array of vertices
-    size_t    max;      // Max number of vertices
-    size_t    count;    // Current number of vertices
-    float     depth;    // Depth of the plane from the camera
-    int       id;       // Identifier for the plane, used to store polygon info
+    vector_t* vertices;     // Array of vertices
+    size_t    max_vertices; // Max number of vertices
+    size_t    count;        // Current number of vertices
+    float     depth;        // Depth of the plane from the camera
+    int       id;           // Identifier for the plane, used to store polygon info
 } screen_space_t;
 
 // Function prototypes
@@ -111,6 +111,6 @@ void       free_polygon(polygon_t* polygon);
 
 // Screen-space quadrilateral operations
 screen_space_t* create_screen_space(size_t max_vertices);
-void            free_screen_space(screen_space_t* quad);
+void            free_screen_space(screen_space_t* screen);
 
 #endif // PRIMITIVES_H

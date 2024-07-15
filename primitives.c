@@ -230,5 +230,39 @@ void free_polygon(polygon_t* polygon) {
 }
 
 // Screen-space quadrilateral operations
-screen_space_t create_screen_space(size_t max_vertices);
-void           free_screen_space(screen_space_t* quad);
+screen_space_t* create_screen_space(size_t max_vertices) {
+    screen_space_t* screen = (screen_space_t*) malloc(sizeof(screen_space_t));
+    if (NULL == screen) {
+        fprintf(stderr, "Failed to allocate memory for screen_space_t structure.\n");
+        return NULL;
+    }
+
+    screen->vertices = create_vector(max_vertices);
+    if (NULL == screen->vertices) {
+        fprintf(stderr, "Failed to allocate memory for screen vertices.\n");
+        free(screen);
+        return NULL;
+    }
+
+    screen->max_vertices = max_vertices;
+    // note: screen->count seems superfluous as we'll always rely upon
+    // max_vertices for the screen space dimensions.
+    screen->count        = max_vertices; // Default is max_vertices
+    screen->depth        = 0.0f;         // Default height
+    screen->id           = 0;            // Default distance
+
+    return screen;
+}
+
+void free_screen_space(screen_space_t* screen) {
+    if (NULL == screen) {
+        fprintf(stderr, "Cannot free a NULL polygon.\n");
+        return;
+    }
+
+    if (screen->vertices) {
+        free_vector(screen->vertices);
+    }
+
+    free(screen);
+}
