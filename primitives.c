@@ -152,9 +152,9 @@ void free_tensor(tensor_t* tensor) {
 
 // Line segment operations
 line_t* create_line(size_t size) {
-    line_t* line = (line_t*) malloc(sizeof(line_t*));
+    line_t* line = (line_t*) malloc(sizeof(line_t));
     if (NULL == line) {
-        fprintf(stderr, "Failed to allocate memory for NULL line.\n");
+        fprintf(stderr, "Failed to allocate memory for line_t.\n");
         return NULL;
     }
 
@@ -168,7 +168,7 @@ line_t* create_line(size_t size) {
     line->end = create_vector(size);
     if (NULL == line->end) {
         fprintf(stderr, "Failed to allocate memory for line end.\n");
-        free(line->start);
+        free_vector(line->start);
         free(line);
         return NULL;
     }
@@ -178,16 +178,16 @@ line_t* create_line(size_t size) {
 
 void free_line(line_t* line) {
     if (NULL == line) {
-        fprintf(stderr, "Cannot free a NULL line");
+        fprintf(stderr, "Cannot free a NULL line.\n");
         return;
     }
 
     if (line->start) {
-        free(line->start);
+        free_vector(line->start);
     }
 
     if (line->end) {
-        free(line->end);
+        free_vector(line->end);
     }
 
     free(line);
