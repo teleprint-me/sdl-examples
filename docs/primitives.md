@@ -86,8 +86,14 @@ $$
 
 $$
 \mathcal{T} = \begin{bmatrix}
-\begin{bmatrix} t_{111} & t_{112} \\ t_{121} & t_{122} \end{bmatrix} \\
-\begin{bmatrix} t_{211} & t_{212} \\ t_{221} & t_{222} \end{bmatrix}
+  \begin{bmatrix}
+    t_{111} & t_{112} \\
+    t_{121} & t_{122}
+  \end{bmatrix} \\
+  \begin{bmatrix}
+    t_{211} & t_{212} \\
+    t_{221} & t_{222}
+  \end{bmatrix}
 \end{bmatrix}
 $$
 
