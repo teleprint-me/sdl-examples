@@ -245,18 +245,16 @@ screen_space_t* create_screen_space(size_t max_vertices) {
     }
 
     screen->max_vertices = max_vertices;
-    // note: screen->count seems superfluous as we'll always rely upon
-    // max_vertices for the screen space dimensions.
-    screen->count        = max_vertices; // Default is max_vertices
-    screen->depth        = 0.0f;         // Default height
-    screen->id           = 0;            // Default distance
+    screen->count        = 0;    // Initialize count to 0
+    screen->depth        = 0.0f; // Default depth
+    screen->id           = 0;    // Default identifier
 
     return screen;
 }
 
 void free_screen_space(screen_space_t* screen) {
     if (NULL == screen) {
-        fprintf(stderr, "Cannot free a NULL polygon.\n");
+        fprintf(stderr, "Cannot free a NULL screen_space_t structure.\n");
         return;
     }
 
