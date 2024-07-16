@@ -123,7 +123,43 @@ $$
 
 - **Definition**: Connects two vertices using a straight line. This is also formally referred to as an edge when one or more lines are connected by at least a single vertex.
 
-- **Data structure**:
+### Key Concepts
+
+- **Point**: 
+  - Has no dimensions.
+  - Represented by a single coordinate in space.
+
+- **Line**: 
+  - Extends infinitely in either direction in a single dimension.
+  - Can be defined by two points.
+
+- **Plane**: 
+  - Extends infinitely in any direction in two dimensions.
+  - Can be defined by three non-collinear points.
+
+- **Collinear Points**: 
+  - Points that lie on the same line.
+
+- **Coplanar Points**: 
+  - Points that lie on the same plane.
+
+- **Line Segment**: 
+  - A series of finite points that extend towards one another between two endpoints.
+
+### Visualization
+
+- A **line** represents an infinite space in either direction:
+
+$$\overleftrightarrow{\rm AB}$$
+
+- A **line segment** represents a finite space between two points:
+
+$$\overline{AB}$$
+
+We can think of points $A$ and $B$ as the **starting** and **ending** points of the line segment.
+
+### Data Structure
+
   - `line_t` struct containing start and end points represented as vectors.
 
   ```c
@@ -133,7 +169,34 @@ $$
   } line_t;
   ```
 
-- **Usage**: Line segments are used to represent edges in our rendering engine.
+### Usage
+
+- **Usage**: Line segments are used to represent edges in our rendering engine. They form the basic building blocks for creating more complex shapes and structures such as polygons.
+
+### Properties and Operations
+
+- **Length of a Line Segment**:
+  - The distance between the start and end points can be calculated using the distance formula.
+  - For 2D points $A(x_1, y_1)$ and $B(x_2, y_2)$:
+
+$$ \text{Length} = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2} $$
+
+- **Midpoint of a Line Segment**:
+  - The point that divides the segment into two equal parts.
+  - For 2D points $A(x_1, y_1)$ and $B(x_2, y_2)$:
+
+$$ \text{Midpoint} = \left( \frac{x_1 + x_2}{2}, \frac{y_1 + y_2}{2} \right) $$
+
+### Example
+
+An example usage in the context of our rendering engine could be defining the edges of a polygon:
+
+```c
+vector_t vertex_a = { ... }; // Define start point
+vector_t vertex_b = { ... }; // Define end point
+
+line_t segment = { &vertex_a, &vertex_b }; // Create a line segment
+```
 
 ## Polygons (polygon_t)
 
