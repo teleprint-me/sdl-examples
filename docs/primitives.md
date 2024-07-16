@@ -192,11 +192,48 @@ $$ \text{Midpoint} = \left( \frac{x_1 + x_2}{2}, \frac{y_1 + y_2}{2} \right) $$
 An example usage in the context of our rendering engine could be defining the edges of a polygon:
 
 ```c
-vector_t vertex_a = { ... }; // Define start point
-vector_t vertex_b = { ... }; // Define end point
+#include "primitives.h"
 
-line_t segment = { &vertex_a, &vertex_b }; // Create a line segment
+#include <stdlib.h>
+
+// Function to create a vector with specified number of columns
+vector_t* create_vector(size_t cols) {
+    vector_t* vec = (vector_t*) malloc(sizeof(vector_t));
+    vec->elements = (float*) malloc(cols * sizeof(float));
+    vec->cols = cols;
+    return vec;
+}
+
+// Create points representing a 2-dimensional space
+size_t cols = 2; // We need two scalars to define where we are in a 2D space
+vector_t* vertex_a = create_vector(cols); // Define start point
+vector_t* vertex_b = create_vector(cols); // Define end point
+
+// Initialize the vector elements
+vertex_a->elements[X] = 0.0f; // x-coordinate of vertex_a
+vertex_a->elements[Y] = 0.0f; // y-coordinate of vertex_a
+
+// Draw the line segment from the origin to the center of the screen
+vertex_b->elements[X] = height / 2; // x-coordinate of vertex_b
+vertex_b->elements[Y] = width / 2;  // y-coordinate of vertex_b
+
+// Note that create_vector sets the length (cols) for us by default
+line_t segment = { vertex_a, vertex_b }; // Create a line segment
 ```
+
+### Explanation
+
+1. **Creating a Vector**: 
+   - We define a function `create_vector` that allocates memory for a `vector_t` structure and its elements.
+   - The `vector_t` struct is initialized with the specified number of columns (size).
+
+2. **Defining Points**: 
+   - We create two vectors `vertex_a` and `vertex_b` representing points in a 2D space.
+   - `vertex_a` is initialized to the origin (0,0), which is typically the top-left corner of the screen.
+   - `vertex_b` is initialized to the center of the screen, using `height/2` and `width/2`.
+
+3. **Creating a Line Segment**: 
+   - We use the two vectors as the start and end points to create a `line_t` line segment.
 
 ## Polygons (polygon_t)
 
