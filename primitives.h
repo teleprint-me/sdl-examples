@@ -96,11 +96,11 @@ typedef struct {
 // Function prototypes
 
 // Vector operations
-vector_t* create_vector(size_t size);
+vector_t* create_vector(size_t cols);
 void      free_vector(vector_t* vector);
 
 // Matrix operations
-matrix_t* create_matrix(size_t n_rows, size_t n_cols);
+matrix_t* create_matrix(size_t rows, size_t cols);
 void      free_matrix(matrix_t* matrix);
 
 // Tensor operations
@@ -108,7 +108,7 @@ tensor_t* create_tensor(size_t* dimensions, rank_t rank);
 void      free_tensor(tensor_t* tensor);
 
 // Line segment operations
-line_t* create_line(size_t size);
+line_t* create_line(size_t cols);
 void    free_line(line_t* line);
 
 // Polygon operations
