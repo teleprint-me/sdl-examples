@@ -1,6 +1,7 @@
 #include "primitives.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 // Vector operations
