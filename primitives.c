@@ -4,24 +4,24 @@
 #include <string.h>
 
 // Vector operations
-vector_t* create_vector(size_t size) {
+vector_t* create_vector(size_t cols) {
     vector_t* vector = (vector_t*) malloc(sizeof(vector_t));
     if (NULL == vector) { // If no memory was allocated
-        fprintf(stderr, "Failed to allocate %zu bytes to struct Vector.\n", size);
+        fprintf(stderr, "Failed to allocate %zu bytes to struct Vector.\n", cols);
         return NULL; // Early return if vector creation failed
     }
 
-    vector->elements = (float*) malloc(size * sizeof(float));
+    vector->elements = (float*) malloc(cols * sizeof(float));
     if (NULL == vector->elements) { // Failed to allocate memory for elements
-        fprintf(stderr, "Failed to allocate %zu bytes to vector->elements.\n", size);
+        fprintf(stderr, "Failed to allocate %zu bytes to vector->elements.\n", cols);
         free(vector); // Free allocated vector memory to prevent leaks
         return NULL;  // Early return if vector creation failed
     }
 
     // After allocating vector->elements
-    memset(vector->elements, 0, size * sizeof(float));
+    memset(vector->elements, 0, cols * sizeof(float));
 
-    vector->size = size; // track the size of the vector to prevent decay.
+    vector->cols = cols; // track the length of the vector to prevent decay.
 
     return vector;
 }
@@ -40,37 +40,26 @@ void free_vector(vector_t* vector) {
 }
 
 // Matrix operations
-matrix_t* create_matrix(size_t n_rows, size_t n_cols) {
+matrix_t* create_matrix(size_t rows, size_t cols) {
     matrix_t* matrix = (matrix_t*) malloc(sizeof(matrix_t));
     if (NULL == matrix) {
         fprintf(stderr, "Failed to allocate memory for matrix_t.\n");
         return NULL;
     }
 
-    matrix->elements = (float**) malloc(n_rows * sizeof(float*));
+    // multiply the width by the height to determine the max number of elements
+    size_t total_elements = rows * cols;
+    matrix->elements      = (float*) malloc(total_elements * sizeof(float));
     if (NULL == matrix->elements) {
         fprintf(stderr, "Failed to allocate memory for matrix rows.\n");
         free(matrix);
         return NULL;
     }
 
-    for (size_t i = 0; i < n_rows; ++i) {
-        matrix->elements[i] = (float*) malloc(n_cols * sizeof(float));
-        if (NULL == matrix->elements[i]) {
-            fprintf(stderr, "Failed to allocate memory for matrix columns.\n");
-            // Free previously allocated rows
-            for (size_t j = 0; j < i; ++j) {
-                free(matrix->elements[j]);
-            }
-            free(matrix->elements);
-            free(matrix);
-            return NULL;
-        }
-        memset(matrix->elements[i], 0, n_cols * sizeof(float));
-    }
+    memset(matrix->elements, 0, total_elements * sizeof(float));
 
-    matrix->n_rows = n_rows;
-    matrix->n_cols = n_cols;
+    matrix->rows = rows;
+    matrix->cols = cols;
 
     return matrix;
 }
@@ -82,11 +71,6 @@ void free_matrix(matrix_t* matrix) {
     }
 
     if (matrix->elements) {
-        for (size_t i = 0; i < matrix->n_rows; ++i) {
-            if (matrix->elements[i]) {
-                free(matrix->elements[i]);
-            }
-        }
         free(matrix->elements);
     }
 
@@ -151,21 +135,21 @@ void free_tensor(tensor_t* tensor) {
 }
 
 // Line segment operations
-line_t* create_line(size_t size) {
+line_t* create_line(size_t cols) {
     line_t* line = (line_t*) malloc(sizeof(line_t));
     if (NULL == line) {
         fprintf(stderr, "Failed to allocate memory for line_t.\n");
         return NULL;
     }
 
-    line->start = create_vector(size);
+    line->start = create_vector(cols);
     if (NULL == line->start) {
         fprintf(stderr, "Failed to allocate memory for line start.\n");
         free(line);
         return NULL;
     }
 
-    line->end = create_vector(size);
+    line->end = create_vector(cols);
     if (NULL == line->end) {
         fprintf(stderr, "Failed to allocate memory for line end.\n");
         free_vector(line->start);
