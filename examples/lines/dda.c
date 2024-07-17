@@ -3,7 +3,7 @@
  *
  * The Digital Differential Analyzer is used for line drawing
  * in computer graphics, providing a simple and efficient method
- * to render lines with antialiasing capabilities.
+ * to render lines.
  */
 
 #include <SDL2/SDL.h>
@@ -11,11 +11,19 @@
 #include <stdint.h>
 #include <stdio.h>
 
-// Struct to hold floating point coordinates
+/**
+ * @struct SDL_FPoint
+ *
+ * @include SDL_FPoint is defined in include/SDL_rect.h
+ *
+ * The `SDL_FPoint` struct is used to store floating point coordinates.
+ * - x: Floating point value representing the X coordinate of a point
+ * - y: Floating point value representing the Y coordinate of a point
+ */
 typedef struct {
     float x;
     float y;
-} float_point_t;
+} SDL_FPoint;
 
 /**
  * @brief Calculate the maximum of two integer values.
@@ -23,8 +31,8 @@ typedef struct {
  * @param delta The difference between the start and end points.
  * @return The maximum absolute value of the differences in x and y coordinates.
  */
-int calculate_steps(float_point_t delta) {
-    // Explicitly type cast to an integer so we can set the limit
+int calculate_steps(SDL_FPoint delta) {
+    // Explicitly typecast and map the 32-bit float to a 32-bit integer so we can set the limit.
     int32_t x = (int32_t) delta.x;
     int32_t y = (int32_t) delta.y;
     // Return the limit based on the point's axis with the greater absolute value
@@ -38,9 +46,9 @@ int calculate_steps(float_point_t delta) {
  * @param start The starting point of the line.
  * @param end The ending point of the line.
  */
-void draw_line(SDL_Renderer* renderer, float_point_t start, float_point_t end) {
+void draw_line(SDL_Renderer* renderer, SDL_FPoint start, SDL_FPoint end) {
     // Calculate delta values
-    float_point_t delta = {
+    SDL_FPoint delta = {
         .y = end.y - start.y,
         .x = end.x - start.x,
     };
@@ -49,13 +57,13 @@ void draw_line(SDL_Renderer* renderer, float_point_t start, float_point_t end) {
     int steps = calculate_steps(delta);
 
     // Calculate increment values
-    float_point_t increment = {
+    SDL_FPoint increment = {
         .y = delta.y / (float) steps,
         .x = delta.x / (float) steps,
     };
 
     // Initialize current point to start point
-    float_point_t current = start;
+    SDL_FPoint current = start;
 
     // Loop through and plot each point
     for (int i = 0; i <= steps; i++) {
@@ -103,8 +111,8 @@ int main(int argc, char* argv[]) {
     SDL_RenderClear(renderer);
 
     // Define start and end points here
-    float_point_t start = {0.0f, 0.0f};     // x_1, y_1
-    float_point_t end   = {320.0f, 240.0f}; // x_2, y_2
+    SDL_FPoint start = {0.0f, 0.0f};     // x_1, y_1
+    SDL_FPoint end   = {320.0f, 240.0f}; // x_2, y_2
 
     // Set the line color to white
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
