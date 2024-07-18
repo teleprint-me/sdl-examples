@@ -31,6 +31,7 @@ float scalar_subtract(float x, float y);
 float scalar_multiply(float x, float y);
 float scalar_divide(float x, float y);
 
+// Executor for element-wise function
 vector_t* vector_elementwise_operation(
     const vector_t* a, const vector_t* b, float (*operation)(float, float)
 );
