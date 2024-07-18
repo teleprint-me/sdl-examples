@@ -5,9 +5,12 @@ development. It serves as a playground for experimenting with C, SDL, and Vulkan
 
 ## Goals
 
-The primary goal of this project is to apply mathematics pragmatically to practical software
-applications while documenting any progress. The documentation can be found within the `docs/`
-directory.
+1. **Primary Goal:** Apply mathematics to practical software applications while documenting
+   progress. The documentation can be found within the `docs/` directory.
+
+2. **Secondary Goal:** Create educational material that may be useful in various contexts.
+
+3. **Tertiary Goal:** Have fun and experiment throughout the process.
 
 ## Scope
 
