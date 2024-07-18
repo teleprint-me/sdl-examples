@@ -38,15 +38,15 @@ vector_t* vector_elementwise_operation(
 
 // Scalar based vector operations
 vector_t* vector_scalar_add(const vector_t* a, const float b);
-vector_t* vector_scalar_sub(const vector_t* a, const float b);
-vector_t* vector_scalar_mul(const vector_t* a, const float b);
-vector_t* vector_scalar_div(const vector_t* a, const float b);
+vector_t* vector_scalar_subtract(const vector_t* a, const float b);
+vector_t* vector_scalar_multiply(const vector_t* a, const float b);
+vector_t* vector_scalar_divide(const vector_t* a, const float b);
 
 // Vector based operations
 vector_t* vector_vector_add(const vector_t* a, const vector_t* b);
-vector_t* vector_vector_sub(const vector_t* a, const vector_t* b);
-vector_t* vector_vector_mul(const vector_t* a, const vector_t* b);
-vector_t* vector_vector_div(const vector_t* a, const vector_t* b);
+vector_t* vector_vector_subtract(const vector_t* a, const vector_t* b);
+vector_t* vector_vector_multiply(const vector_t* a, const vector_t* b);
+vector_t* vector_vector_divide(const vector_t* a, const vector_t* b);
 
 // Common vector operations
 vector_t* vector_copy(const vector_t* vector);
