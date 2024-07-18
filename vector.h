@@ -1,6 +1,8 @@
 /**
  * Copyright © 2024 Austin Berrio
  *
+ * @file vector.h
+ *
  * @brief A simple and easy to use Vector API
  *
  * Only use pure C.
@@ -14,6 +16,8 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+// Vector lifecycle management
+
 // N-dimensional vector structure
 // Coordinates for a point in a line or plane
 // May also represent the magnitude and or direction of an object in a line or plane
@@ -25,13 +29,15 @@ typedef struct {
 vector_t* vector_create(size_t cols);
 void      vector_free(vector_t* vector);
 
+// Element-wise operations
+
 // Helper functions for element-wise operations
 float scalar_add(float x, float y);
 float scalar_subtract(float x, float y);
 float scalar_multiply(float x, float y);
 float scalar_divide(float x, float y);
 
-// Executor for element-wise function
+// Executor for element-wise functions
 vector_t* vector_elementwise_operation(
     const vector_t* a, const vector_t* b, float (*operation)(float, float)
 );
@@ -49,12 +55,19 @@ vector_t* vector_vector_multiply(const vector_t* a, const vector_t* b);
 vector_t* vector_vector_divide(const vector_t* a, const vector_t* b);
 
 // Common vector operations
-vector_t* vector_copy(const vector_t* vector);
+
+// Copy a vector
+vector_t* vector_deep_copy(const vector_t* vector);
+vector_t* vector_shallow_copy(const vector_t* vector);
+// Determine the length or distance between vectors
 float     vector_magnitude(const vector_t* vector);
-vector_t* vector_normalize(vector_t* vector, bool inplace);
 float     vector_distance(const vector_t* a, const vector_t* b);
-vector_t* vector_scale(vector_t* vector, float scalar, bool inplace);
+// Calculate the mean of the vector
 float     vector_mean(vector_t* vector);
+float     vector_low_pass_filter(vector_t* vector);
+// Resize the vector
+vector_t* vector_normalize(vector_t* vector, bool inplace);
+vector_t* vector_scale(vector_t* vector, float scalar, bool inplace);
 vector_t* vector_clip(vector_t* vector, float min, float max, bool inplace);
 
 // Special vector operations
