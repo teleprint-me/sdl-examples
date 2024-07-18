@@ -176,7 +176,7 @@ vector_t* vector_scale(vector_t* vector, float scalar, bool inplace) {
     return scaled_vector;
 }
 
-float vector_mean(vector_t* vector) {
+float vector_mean(const vector_t* vector) {
     if (NULL == vector || 0 == vector->dimensions) {
         return NAN; // Return NAN for invalid input
     }
@@ -283,19 +283,19 @@ vector_t* perform_elementwise_operation(
 }
 
 // Updated functions using the new helper function
-vector_t* vector_add(const vector_t* a, const vector_t* b) {
+vector_t* vector_vector_add(const vector_t* a, const vector_t* b) {
     return perform_elementwise_operation(a, b, scalar_add);
 }
 
-vector_t* vector_subtract(const vector_t* a, const vector_t* b) {
+vector_t* vector_vector_subtract(const vector_t* a, const vector_t* b) {
     return perform_elementwise_operation(a, b, scalar_subtract);
 }
 
-vector_t* vector_multiply(const vector_t* a, const vector_t* b) {
+vector_t* vector_vector_multiply(const vector_t* a, const vector_t* b) {
     return perform_elementwise_operation(a, b, scalar_multiply);
 }
 
-vector_t* vector_divide(const vector_t* a, const vector_t* b) {
+vector_t* vector_vector_divide(const vector_t* a, const vector_t* b) {
     return perform_elementwise_operation(a, b, scalar_divide);
 }
 
