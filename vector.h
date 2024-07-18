@@ -145,23 +145,30 @@ float vector_distance(const vector_t* a, const vector_t* b);
 
 /**
  * @brief Calculate the mean of an N-dimensional vector
+ *
+ * @note This estimates the mean by weighted averaging
+ *
+ * m(n) = [x(1) + x(2) + ... + x(n)] / n
  */
 float vector_mean(vector_t* vector);
 
 /**
  * @brief Low pass filter on an N-dimensional vector
+ *
+ * @note This estimates the mean by low-pass filtering rather than averaging.
+ *
+ * m(n + 1) = (1 - α) m(n) + α x(n + 1)
+ *
+ * References:
+ * https://www.cs.princeton.edu/courses/archive/fall08/cos436/Duda/PR_learn/mean.htm
+ *
  */
-float vector_low_pass_filter(vector_t* vector);
-
-/**
- * @brief Resize the dimensions of an N-dimensional vector
- */
-vector_t* vector_resize(vector_t* vector, size_t new_size);
+float vector_low_pass_filter(vector_t* vector, float alpha);
 
 /**
  * @brief Normalize a given N-dimensional vector in place
  */
-void vector_normalize_inplace(vector_t* vector);
+vector_t* vector_normalize(vector_t* vector, bool inplace);
 
 /**
  * @brief Scale an N-dimensional vector by the specified factor
