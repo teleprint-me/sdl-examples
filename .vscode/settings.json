@@ -160,6 +160,8 @@
     "math.h": "c",
     "stdio.h": "c",
     "sdl_events.h": "c",
-    "stdbool.h": "c"
+    "stdbool.h": "c",
+    "sdl_render.h": "c",
+    "vector.h": "c"
   }
 }
