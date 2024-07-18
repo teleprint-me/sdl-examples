@@ -1,45 +1,44 @@
-#include "primitives.h"
+/**
+ * @file examples/vectors/simple.c
+ */
+
+#include "../../vector.h"
+
+#include <SDL2/SDL.h>
 
 #include <stdio.h>
+#include <stdlib.h>
 
-vector_t* vector_add(vector_t* a, vector_t* b) {
-    if (a->cols != b->cols) {
-        fprintf(stderr, "Vectors must have the same length.\n");
-        return NULL;
-    }
+#define X 0
+#define Y 1
 
-    // also known as the length or size of a vector
-    size_t magnitude = a->cols;
-
-    vector_t* c = create_vector(magnitude);
-    for (size_t i = 0; i < magnitude; i++) {
-        c->elements[i] = a->elements[i] + b->elements[i];
-    }
-
-    return c;
+size_t calculate_vector_magnitude(SDL_FPoint* point) {
+    // distance formula = | V | = √a^2 + √b^2
+    return abs((int) sqrtf(powf(point->x, 2) + powf(point->y, 2)));
 }
 
 int main(int argc, char* argv[]) {
-    size_t    magnitude = 2; // 2-dimensional vector
-    vector_t* a         = create_vector(magnitude);
-    a->elements[X]      = 1.5f;
-    a->elements[Y]      = 2.75f;
+    size_t dimensions = 2; // 2-dimensional vector
 
-    vector_t* b    = create_vector(magnitude);
-    b->elements[X] = 3.25f;
-    b->elements[Y] = 1.25f;
+    vector_t* a        = vector_create(dimensions);
+    a->displacement[X] = 1.5f;
+    a->displacement[Y] = 2.75f;
 
-    vector_t* c = vector_add(a, b);
+    vector_t* b        = vector_create(dimensions);
+    b->displacement[X] = 3.25f;
+    b->displacement[Y] = 1.25f;
 
-    for (size_t i = 0; i < magnitude; i++) {
-        fprintf(stderr, "a->elements[%zd] = %.2f\n", i, a->elements[i]);
-        fprintf(stderr, "b->elements[%zd] = %.2f\n", i, b->elements[i]);
-        fprintf(stderr, "c->elements[%zd] = %.2f\n", i, c->elements[i]);
+    vector_t* c = vector_vector_add(a, b);
+
+    for (size_t i = 0; i < dimensions; i++) {
+        fprintf(stderr, "a->elements[%zd] = %.2f\n", i, a->displacement[i]);
+        fprintf(stderr, "b->elements[%zd] = %.2f\n", i, b->displacement[i]);
+        fprintf(stderr, "c->elements[%zd] = %.2f\n", i, c->displacement[i]);
     }
 
-    free_vector(a);
-    free_vector(b);
-    free_vector(c);
+    vector_free(a);
+    vector_free(b);
+    vector_free(c);
 
     return 0;
 }
