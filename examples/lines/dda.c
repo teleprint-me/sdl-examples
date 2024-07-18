@@ -1,5 +1,7 @@
 /**
- * @file dda.c
+ * Copyright (c) 2024 Austin Berrio
+ *
+ * @file examples/lines/dda.c
  *
  * The Digital Differential Analyzer is used for line drawing
  * in computer graphics, providing a simple and efficient method
