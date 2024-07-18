@@ -366,15 +366,17 @@ vector_t* vector_cross_product(const vector_t* a, const vector_t* b) {
 
 // x = r cos θ and y = r sin θ
 vector_t* vector_polar_to_cartesian(const vector_t* polar_vector) {
-    if (polar_vector == NULL || polar_vector->dimensions != 2) {
+    if (NULL == polar_vector || polar_vector->dimensions != 2) {
         return NULL; // Return NULL if input is invalid
     }
 
     vector_t* cartesian_vector = vector_create(2);
-    if (cartesian_vector == NULL) {
+    if (NULL == cartesian_vector) {
         return NULL; // Return NULL if memory allocation fails
     }
 
+    // radii/radius/ray all seem equivalently apropos
+    // perhaps ray is best suited?
     float r     = polar_vector->displacement[0];
     float theta = polar_vector->displacement[1];
 
@@ -386,12 +388,12 @@ vector_t* vector_polar_to_cartesian(const vector_t* polar_vector) {
 
 // r = ± √(x^2 + y^2) and tan θ = y / x
 vector_t* vector_cartesian_to_polar(const vector_t* cartesian_vector) {
-    if (cartesian_vector == NULL || cartesian_vector->dimensions != 2) {
+    if (NULL == cartesian_vector || cartesian_vector->dimensions != 2) {
         return NULL; // Return NULL if input is invalid
     }
 
     vector_t* polar_vector = vector_create(2);
-    if (polar_vector == NULL) {
+    if (NULL == polar_vector) {
         return NULL; // Return NULL if memory allocation fails
     }
 
