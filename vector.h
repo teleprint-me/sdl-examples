@@ -38,7 +38,7 @@ typedef struct {
  * This function dynamically allocates memory and initializes a new vector with the specified number
  * of dimensions. The values in the vector are set to zero by default.
  */
-vector_t* vector_create(size_t cols);
+vector_t* vector_create(size_t dimensions);
 
 /**
  * @brief Free an allocated N-dimensional vector
