@@ -1,19 +1,38 @@
 # SDL Examples
 
-This repository contains examples of using SDL2 for multimedia and game development.
+This repository contains examples of using SDL2 for multimedia, game, and machine learning
+development. It serves as a playground for experimenting with C, SDL, and Vulkan for fun and profit.
+
+## Goals
+
+The primary goal of this project is to apply mathematics pragmatically to practical software
+applications while documenting any progress. The documentation can be found within the `docs/`
+directory.
+
+## Supported Platforms
+
+The following platforms are recommended for this project:
+
+- **EndeavourOS:** Recommended for beginners, enthusiasts, and power users. It is a user-friendly
+  Arch-based derivative.
+- **Arch Linux:** Officially supported for adept and experienced users. This is not recommended for
+  beginners.
+- **Debian:** A good alternative to Ubuntu, suitable for various levels of users and use cases.
 
 ## Prerequisites
 
-Ensure you have the following installed on your Arch Linux system:
+Ensure you have the following libraries installed on your Arch Linux system:
 
 - SDL2 and related libraries:
+
   ```sh
   sudo pacman -S sdl2 sdl2_image sdl2_mixer sdl2_ttf
   ```
 
 - CMake for building the project:
+
   ```sh
-  sudo pacman -S cmake
+  sudo pacman -S cmake clang
   ```
 
 ## Project Structure
@@ -22,45 +41,64 @@ The project has the following structure:
 
 ```
 .
+├── build
 ├── CMakeLists.txt
-└── simple.c
+├── docs
+├── examples
+├── LICENSE
+├── NOTE.md
+├── src
+├── test
+├── README.md
+├── precision.c
+├── precision.h
+├── primitives.c
+├── primitives.h
+├── vector.c
+└── vector.h
+
+6 directories, 10 files
 ```
 
 - `CMakeLists.txt`: The CMake configuration file.
-- `simple.c`: A simple SDL2 example program.
+- `docs`: Documentation providing in-depth information, references, and guides.
+- `examples`: Isolated/independent examples.
+- `src`: The primary source code (currently empty).
+- `test`: Tests for `src` (currently empty).
+
+Note that the directory structure may evolve over time.
 
 ## Building the Project
 
 1. **Clone the repository:**
-    ```sh
-    git clone https://github.com/teleprint-me/sdl-examples.git
-    cd sdl-examples
-    ```
+
+   ```sh
+   git clone https://github.com/teleprint-me/sdl-examples.git
+   cd sdl-examples
+   ```
 
 2. **Create the build files using CMake:**
-    ```sh
-    cmake -B build -DCMAKE_BUILD_TYPE=Debug
-    ```
 
-    This command generates the necessary build files in the `build` directory and sets the build type to `Debug`. You can change `Debug` to `Release` for an optimized build.
+   ```sh
+   cmake -B build -DCMAKE_BUILD_TYPE=Debug
+   ```
 
 3. **Build the project:**
-    ```sh
-    cmake --build build -j 8
-    ```
 
-    This command compiles the code using 8 parallel jobs (you can adjust the number based on your CPU cores).
+   ```sh
+   cmake --build build -j 8
+   ```
 
 4. **Run the executable:**
-    ```sh
-    ./build/simple
-    ```
+   ```sh
+   ./build/simple
+   ```
 
-    This runs the `simple` executable that was created in the `build` directory.
+See `docs/building.md` for more information.
 
 ## Example Code
 
-Here is the example code in `simple.c`:
+Here's a simple example named `simple.c`:
 
 ```c
 #include <SDL2/SDL.h>
@@ -103,3 +141,8 @@ int main(int argc, char* argv[]) {
     return 0;
 }
 ```
+
+## License
+
+This repository and its contents are licensed under the AGPL license. All respective and legally
+applicable copyrights apply.
