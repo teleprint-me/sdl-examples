@@ -21,11 +21,12 @@
  * The `SDL_FPoint` struct is used to store floating point coordinates.
  * - x: Floating point value representing the X coordinate of a point
  * - y: Floating point value representing the Y coordinate of a point
+ *
+ * typedef struct {
+ *     float x;
+ *     float y;
+ * } SDL_FPoint;
  */
-typedef struct {
-    float x;
-    float y;
-} SDL_FPoint;
 
 /**
  * @brief Calculate the maximum of two integer values.
