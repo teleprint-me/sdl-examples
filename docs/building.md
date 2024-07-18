@@ -86,6 +86,8 @@ Use CMake to configure the build system:
 cmake -B build -DCMAKE_BUILD_TYPE=Debug
 ```
 
+This command generates the necessary build files in the `build` directory and sets the build type to `Debug`. You can change `Debug` to `Release` for an optimized build.
+
 Note that this creates the `build` directory if it does not already exist. It is only updated if the `CMakeLists.txt` file is modified in any way.
 
 ### Step 3: Build the Project
@@ -95,6 +97,8 @@ Compile the project using CMake:
 ```sh
 cmake --build build -j 8
 ```
+
+This command compiles the code using 8 parallel jobs (you can adjust the number based on your CPU cores).
 
 Note that we specify the build directory so that `cmake` can discover the generated directives.
 
