@@ -19,9 +19,15 @@ include_directories(${SDL2_INCLUDE_DIRS})
 add_link_options(-lm -lSDL2)
 
 # Add executable targets
-add_executable(simple simple.c)
-add_executable(line line.c)
-add_executable(drivers drivers.c)
-add_executable(display display.c)
-add_executable(dda dda.c)
-add_executable(simple_vector primitives.c simple_vector.c)
+
+# Simple examples
+add_executable(simple examples/windows/simple.c)
+add_executable(environ examples/drivers/environ.c)
+add_executable(display examples/drivers/display.c)
+
+# Line examples
+add_executable(line examples/lines/line.c)
+add_executable(dda examples/lines/dda.c)
+
+# Vector examples
+add_executable(simple_vector vector.c examples/vectors/simple.c)
