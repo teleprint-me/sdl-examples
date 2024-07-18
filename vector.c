@@ -365,7 +365,41 @@ vector_t* vector_cross_product(const vector_t* a, const vector_t* b) {
 // Coordinate transformation functions (prototypes to be defined)
 
 // x = r cos θ and y = r sin θ
-vector_t* vector_polar_to_cartesian(const vector_t* polar_vector) {}
+vector_t* vector_polar_to_cartesian(const vector_t* polar_vector) {
+    if (polar_vector == NULL || polar_vector->dimensions != 2) {
+        return NULL; // Return NULL if input is invalid
+    }
+
+    vector_t* cartesian_vector = vector_create(2);
+    if (cartesian_vector == NULL) {
+        return NULL; // Return NULL if memory allocation fails
+    }
+
+    float r     = polar_vector->displacement[0];
+    float theta = polar_vector->displacement[1];
+
+    cartesian_vector->displacement[0] = r * cos(theta); // x = r * cos(θ)
+    cartesian_vector->displacement[1] = r * sin(theta); // y = r * sin(θ)
+
+    return cartesian_vector;
+}
 
 // r = ± √(x^2 + y^2) and tan θ = y / x
-vector_t* vector_cartesian_to_polar(const vector_t* cartesian_vector) {}
+vector_t* vector_cartesian_to_polar(const vector_t* cartesian_vector) {
+    if (cartesian_vector == NULL || cartesian_vector->dimensions != 2) {
+        return NULL; // Return NULL if input is invalid
+    }
+
+    vector_t* polar_vector = vector_create(2);
+    if (polar_vector == NULL) {
+        return NULL; // Return NULL if memory allocation fails
+    }
+
+    float x = cartesian_vector->displacement[0];
+    float y = cartesian_vector->displacement[1];
+
+    polar_vector->displacement[0] = sqrt(x * x + y * y); // r = √(x^2 + y^2)
+    polar_vector->displacement[1] = atan2(y, x);         // θ = atan2(y, x)
+
+    return polar_vector;
+}
