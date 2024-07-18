@@ -1,6 +1,6 @@
 # SDL Examples
 
-This repository contains examples of using SDL2 for multimedia, game, and machine learning
+This repository contains examples of using SDL2 for multimedia, gaming, and machine learning
 development. It serves as a playground for experimenting with C, SDL, and Vulkan for fun and profit.
 
 ## Goals
@@ -8,6 +8,16 @@ development. It serves as a playground for experimenting with C, SDL, and Vulkan
 The primary goal of this project is to apply mathematics pragmatically to practical software
 applications while documenting any progress. The documentation can be found within the `docs/`
 directory.
+
+## Scope
+
+- All source code is written in pure C.
+- Libraries are used only when absolutely necessary.
+- Dependencies are kept to a minimum. The primary dependencies are:
+  - clang
+  - cmake
+  - SDL
+  - Vulkan
 
 ## Supported Platforms
 
