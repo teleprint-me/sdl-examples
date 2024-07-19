@@ -437,7 +437,7 @@ vector_t* vector_cartesian_to_polar(const vector_t* cartesian_vector) {
     float y = cartesian_vector->displacement[1];
 
     polar_vector->displacement[0] = sqrtf(x * x + y * y); // r = √(x^2 + y^2)
-    polar_vector->displacement[1] = atan2f(y, x);         // θ = atan(y, x)
+    polar_vector->displacement[1] = atan2f(y, x);         // θ = atan (y, x)
 
     return polar_vector;
 }
