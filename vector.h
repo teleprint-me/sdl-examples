@@ -71,18 +71,18 @@ float scalar_multiply(float x, float y);
 float scalar_divide(float x, float y);
 
 /**
- * @brief Executor for element-wise functions
+ * @brief Executor for element-wise vector-to-scalar functions
  *
  * This function applies a given operation to each corresponding pair of elements in two vectors and
  * returns the resulting vector.
  *
  * @param a First input vector
- * @param b Second input vector
+ * @param b Second input scalar
  * @param operation A pointer to the function performing the element-wise operation
  * @return A pointer to the resulting vector
  */
-vector_t* vector_elementwise_operation(
-    const vector_t* a, const vector_t* b, float (*operation)(float, float)
+vector_t* perform_elementwise_scalar_operation(
+    const vector_t* a, const float b, float (*operation)(float, float)
 );
 
 // Scalar based vector operations
@@ -122,6 +122,21 @@ vector_t* vector_scalar_multiply(const vector_t* a, const float b);
  * @return A pointer to the resulting vector
  */
 vector_t* vector_scalar_divide(const vector_t* a, const float b);
+
+/**
+ * @brief Executor for element-wise vector-to-vector functions
+ *
+ * This function applies a given operation to each corresponding pair of elements in two vectors and
+ * returns the resulting vector.
+ *
+ * @param a First input vector
+ * @param b Second input vector
+ * @param operation A pointer to the function performing the element-wise operation
+ * @return A pointer to the resulting vector
+ */
+vector_t* perform_elementwise_vector_operation(
+    const vector_t* a, const vector_t* b, float (*operation)(float, float)
+);
 
 // Vector based operations
 
