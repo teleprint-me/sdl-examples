@@ -398,6 +398,8 @@ vector_t* vector_cross_product(const vector_t* a, const vector_t* b) {
 
 // Coordinate transformation functions (prototypes to be defined)
 
+// TODO: Triple check the conversions between coordinate systems
+
 // x = r cos θ and y = r sin θ
 vector_t* vector_polar_to_cartesian(const vector_t* polar_vector) {
     if (NULL == polar_vector || polar_vector->dimensions != 2) {
@@ -414,8 +416,8 @@ vector_t* vector_polar_to_cartesian(const vector_t* polar_vector) {
     float r     = polar_vector->displacement[0];
     float theta = polar_vector->displacement[1];
 
-    cartesian_vector->displacement[0] = r * cos(theta); // x = r * cos(θ)
-    cartesian_vector->displacement[1] = r * sin(theta); // y = r * sin(θ)
+    cartesian_vector->displacement[0] = r * cosf(theta); // x = r * cos(θ)
+    cartesian_vector->displacement[1] = r * sinf(theta); // y = r * sin(θ)
 
     return cartesian_vector;
 }
@@ -434,8 +436,8 @@ vector_t* vector_cartesian_to_polar(const vector_t* cartesian_vector) {
     float x = cartesian_vector->displacement[0];
     float y = cartesian_vector->displacement[1];
 
-    polar_vector->displacement[0] = sqrt(x * x + y * y); // r = √(x^2 + y^2)
-    polar_vector->displacement[1] = atan2(y, x);         // θ = atan2(y, x)
+    polar_vector->displacement[0] = sqrtf(x * x + y * y); // r = √(x^2 + y^2)
+    polar_vector->displacement[1] = atan2f(y, x);         // θ = atan(y, x)
 
     return polar_vector;
 }
