@@ -26,10 +26,13 @@
  *
  * This structure stores the number of dimensions and a dynamic array of floating-point values,
  * which represent the components of the vector in each dimension.
+ *
+ * @param elements One dimensional array of elements representing a vector
+ * @param dimensions The number of dimensions for a vector
  */
 typedef struct {
-    size_t dimensions;   // Number of dimensions for the vector
-    float* displacement; // Dynamic array of elements representing the vector
+    float* elements;
+    size_t dimensions;
 } vector_t;
 
 /**

@@ -27,15 +27,15 @@ vector_t* vector_create(size_t dimensions) {
         return NULL; // Early return if vector creation failed
     }
 
-    vector->displacement = (float*) malloc(dimensions * sizeof(float));
-    if (NULL == vector->displacement) { // Failed to allocate memory for displacement
-        fprintf(stderr, "Failed to allocate %zu bytes to vector->displacement.\n", dimensions);
+    vector->elements = (float*) malloc(dimensions * sizeof(float));
+    if (NULL == vector->elements) { // Failed to allocate memory for elements
+        fprintf(stderr, "Failed to allocate %zu bytes to vector->elements.\n", dimensions);
         free(vector); // Free allocated vector memory to prevent leaks
         return NULL;  // Early return if vector creation failed
     }
 
-    // After allocating vector->displacement
-    memset(vector->displacement, 0, dimensions * sizeof(float));
+    // After allocating vector->elements
+    memset(vector->elements, 0, dimensions * sizeof(float));
 
     vector->dimensions = dimensions; // track the dimensions of the vector to prevent decay.
 
@@ -43,8 +43,8 @@ vector_t* vector_create(size_t dimensions) {
 }
 
 void vector_free(vector_t* vector) {
-    if (vector->displacement) {
-        free(vector->displacement);
+    if (vector->elements) {
+        free(vector->elements);
     }
 
     if (vector) {
@@ -59,7 +59,7 @@ vector_t* vector_deep_copy(const vector_t* vector) {
     }
 
     for (size_t i = 0; i < vector->dimensions; ++i) {
-        deep_copy->displacement[i] = vector->displacement[i];
+        deep_copy->elements[i] = vector->elements[i];
     }
 
     return deep_copy;
@@ -70,18 +70,18 @@ vector_t* vector_shallow_copy(const vector_t* vector) {
         return NULL;
     }
 
-    // Allocate memory for the new Vector structure only, not for its displacement
+    // Allocate memory for the new Vector structure only, not for its elements
     vector_t* new_vector = (vector_t*) malloc(sizeof(vector_t));
     if (NULL == new_vector) { // If no memory was allocated
         fprintf(stderr, "Failed to allocate %zu bytes to vector_t.\n", sizeof(vector_t));
         return NULL; // Early return if vector creation failed
     }
 
-    // Copy all fields except displacement (pointer to an array)
+    // Copy all fields except elements (pointer to an array)
     new_vector->dimensions = vector->dimensions;
 
     // Assign the existing pointer to the new Vector structure
-    new_vector->displacement = vector->displacement;
+    new_vector->elements = vector->elements;
 
     return new_vector;
 }
@@ -90,9 +90,9 @@ vector_t* vector_shallow_copy(const vector_t* vector) {
 float vector_magnitude(const vector_t* vector) {
     float sum = 0;
 
-    // sum the square of the displacement for n-dimensional vectors
+    // sum the square of the elements for n-dimensional vectors
     for (size_t i = 0; i < vector->dimensions; i++) {
-        sum += vector->displacement[i] * vector->displacement[i];
+        sum += vector->elements[i] * vector->elements[i];
     }
 
     return sqrt(sum);
@@ -107,9 +107,9 @@ vector_t* vector_normalize(vector_t* vector, bool inplace) {
     }
 
     if (inplace) {
-        // scale the displacement down by the magnitude to produce a unit vector
+        // scale the elements down by the magnitude to produce a unit vector
         for (size_t i = 0; i < vector->dimensions; i++) {
-            vector->displacement[i] /= magnitude;
+            vector->elements[i] /= magnitude;
         }
 
         return vector;
@@ -122,7 +122,7 @@ vector_t* vector_normalize(vector_t* vector, bool inplace) {
     }
 
     for (size_t i = 0; i < vector->dimensions; i++) {
-        unit->displacement[i] = vector->displacement[i] / magnitude;
+        unit->elements[i] = vector->elements[i] / magnitude;
     }
 
     return unit;
@@ -143,8 +143,7 @@ float vector_distance(const vector_t* a, const vector_t* b) {
     }
 
     for (size_t i = 0; i < a->dimensions; ++i) {
-        distance_squared += (a->displacement[i] - b->displacement[i])
-                            * (a->displacement[i] - b->displacement[i]);
+        distance_squared += (a->elements[i] - b->elements[i]) * (a->elements[i] - b->elements[i]);
     }
 
     return sqrtf(distance_squared);
@@ -157,7 +156,7 @@ vector_t* vector_scale(vector_t* vector, float scalar, bool inplace) {
 
     if (inplace) { // block out-of-place vector scaling if in-place is true
         for (size_t i = 0; i < vector->dimensions; ++i) {
-            vector->displacement[i] *= scalar; // scale the vector in-place
+            vector->elements[i] *= scalar; // scale the vector in-place
         }
         return vector; // return the scaled vector
     }
@@ -170,7 +169,7 @@ vector_t* vector_scale(vector_t* vector, float scalar, bool inplace) {
     }
 
     for (size_t i = 0; i < vector->dimensions; ++i) {
-        scaled_vector->displacement[i] = vector->displacement[i] * scalar;
+        scaled_vector->elements[i] = vector->elements[i] * scalar;
     }
 
     return scaled_vector;
@@ -183,12 +182,12 @@ float vector_mean(const vector_t* vector) {
 
     float sum = 0.0f;
     for (size_t i = 0; i < vector->dimensions; i++) {
-        if (isnan(vector->displacement[i])) {
+        if (isnan(vector->elements[i])) {
             // Log error and return NAN if any element is NaN
             fprintf(stderr, "NaN element found at index %zu.\n", i);
             return NAN;
         }
-        sum += vector->displacement[i];
+        sum += vector->elements[i];
     }
 
     return sum / vector->dimensions; // Return the mean
@@ -201,11 +200,11 @@ vector_t* vector_clip(vector_t* vector, float min, float max, bool inplace) {
 
     if (inplace) {
         for (size_t i = 0; i < vector->dimensions; i++) {
-            if (vector->displacement[i] < min) {
-                vector->displacement[i] = min;
+            if (vector->elements[i] < min) {
+                vector->elements[i] = min;
             }
-            if (vector->displacement[i] > max) {
-                vector->displacement[i] = max;
+            if (vector->elements[i] > max) {
+                vector->elements[i] = max;
             }
         }
 
@@ -219,12 +218,12 @@ vector_t* vector_clip(vector_t* vector, float min, float max, bool inplace) {
     }
 
     for (size_t i = 0; i < vector->dimensions; i++) {
-        if (vector->displacement[i] < min) {
-            clipped_vector->displacement[i] = min;
-        } else if (vector->displacement[i] > max) {
-            clipped_vector->displacement[i] = max;
+        if (vector->elements[i] < min) {
+            clipped_vector->elements[i] = min;
+        } else if (vector->elements[i] > max) {
+            clipped_vector->elements[i] = max;
         } else {
-            clipped_vector->displacement[i] = vector->displacement[i];
+            clipped_vector->elements[i] = vector->elements[i];
         }
     }
 
@@ -265,7 +264,7 @@ vector_t* perform_elementwise_scalar_operation(
 
     // Perform element-wise operation
     for (size_t i = 0; i < a->dimensions; i++) {
-        c->displacement[i] = operation(a->displacement[i], b);
+        c->elements[i] = operation(a->elements[i], b);
     }
 
     return c;
@@ -310,7 +309,7 @@ vector_t* perform_elementwise_vector_operation(
 
     // Perform element-wise operation
     for (size_t i = 0; i < a->dimensions; i++) {
-        c->displacement[i] = operation(a->displacement[i], b->displacement[i]);
+        c->elements[i] = operation(a->elements[i], b->elements[i]);
     }
 
     return c;
@@ -349,7 +348,7 @@ float vector_dot_product(const vector_t* a, const vector_t* b) {
     float product = 0.0f;
 
     for (size_t i = 0; i < a->dimensions; i++) {
-        product += a->displacement[i] * b->displacement[i];
+        product += a->elements[i] * b->elements[i];
     }
 
     return product;
@@ -370,18 +369,15 @@ vector_t* vector_cross_product(const vector_t* a, const vector_t* b) {
     }
 
     // Calculate the components of the cross product vector.
-    result->displacement[0]
-        = a->displacement[1] * b->displacement[2] - a->displacement[2] * b->displacement[1];
-    result->displacement[1]
-        = a->displacement[2] * b->displacement[0] - a->displacement[0] * b->displacement[2];
-    result->displacement[2]
-        = a->displacement[0] * b->displacement[1] - a->displacement[1] * b->displacement[0];
+    result->elements[0] = a->elements[1] * b->elements[2] - a->elements[2] * b->elements[1];
+    result->elements[1] = a->elements[2] * b->elements[0] - a->elements[0] * b->elements[2];
+    result->elements[2] = a->elements[0] * b->elements[1] - a->elements[1] * b->elements[0];
 
     return result;
 }
 
 // Polar coordinates are defined as the ordered pair (r, θ) names a point r units from origin along
-// the terminal side of angle θ in standard position (origin to displacement).
+// the terminal side of angle θ in standard position (origin to elements).
 
 // The derivation between polar and cartesian coordinates is to consider a point P with the
 // rectangular (x, y) and polar (r, θ) coordinates.
@@ -413,11 +409,11 @@ vector_t* vector_polar_to_cartesian(const vector_t* polar_vector) {
 
     // radii/radius/ray all seem equivalently apropos
     // perhaps ray is best suited?
-    float r     = polar_vector->displacement[0];
-    float theta = polar_vector->displacement[1];
+    float r     = polar_vector->elements[0];
+    float theta = polar_vector->elements[1];
 
-    cartesian_vector->displacement[0] = r * cosf(theta); // x = r * cos(θ)
-    cartesian_vector->displacement[1] = r * sinf(theta); // y = r * sin(θ)
+    cartesian_vector->elements[0] = r * cosf(theta); // x = r * cos(θ)
+    cartesian_vector->elements[1] = r * sinf(theta); // y = r * sin(θ)
 
     return cartesian_vector;
 }
@@ -433,11 +429,11 @@ vector_t* vector_cartesian_to_polar(const vector_t* cartesian_vector) {
         return NULL; // Return NULL if memory allocation fails
     }
 
-    float x = cartesian_vector->displacement[0];
-    float y = cartesian_vector->displacement[1];
+    float x = cartesian_vector->elements[0];
+    float y = cartesian_vector->elements[1];
 
-    polar_vector->displacement[0] = sqrtf(x * x + y * y); // r = √(x^2 + y^2)
-    polar_vector->displacement[1] = atan2f(y, x);         // θ = atan (y, x)
+    polar_vector->elements[0] = sqrtf(x * x + y * y); // r = √(x^2 + y^2)
+    polar_vector->elements[1] = atan2f(y, x);         // θ = atan (y, x)
 
     return polar_vector;
 }
