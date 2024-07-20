@@ -18,12 +18,22 @@
 
 // Structures
 
-// N-dimensional matrix structure
-// A matrix is a rectangular array of rows and columns representing a 2-dimensional space
+/**
+ * @brief A structure representing a 2-dimensional matrix.
+ *
+ * A matrix is a rectangular array of rows and columns representing a 2-dimensional space.
+ * This structure stores the number of rows and columns, along with a two-dimensional dynamic array
+ * of floating-point values, which represent the components of the matrix.
+ *
+ * @param elements A two-dimensional pointer to an array of floats, representing the matrix
+ * elements.
+ * @param columns  The number of columns (width) of the matrix.
+ * @param rows     The number of rows (height) of the matrix.
+ */
 typedef struct {
-    float** elements; // Flat array representing the matrix elements
-    size_t  cols;     // The width of a matrix
-    size_t  rows;     // The height of a matrix
+    float** elements; ///< Two-dimensional array representing the matrix elements.
+    size_t  columns;  ///< The number of columns (width) of the matrix.
+    size_t  rows;     ///< The number of rows (height) of the matrix.
 } matrix_t;
 
 // Life-cycle operations
@@ -32,11 +42,12 @@ typedef struct {
  * @brief Creates a new matrix with the specified number of rows and columns.
  * Initializes all elements to zero.
  *
- * @param rows Number of rows.
  * @param cols Number of columns.
+ * @param rows Number of rows.
+ *
  * @return Pointer to the newly created matrix or NULL if allocation fails.
  */
-matrix_t* matrix_create(size_t rows, size_t cols);
+matrix_t* create_matrix(size_t columns, size_t rows);
 
 /**
  * Free its memory. Safely handles NULL pointers.

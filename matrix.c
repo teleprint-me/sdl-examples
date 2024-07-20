@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 // Matrix operations
-matrix_t* create_matrix(size_t rows, size_t cols) {
+matrix_t* create_matrix(size_t cols, size_t rows) {
     matrix_t* matrix = (matrix_t*) malloc(sizeof(matrix_t));
     if (NULL == matrix) {
         fprintf(stderr, "Failed to allocate memory for matrix_t.\n");
