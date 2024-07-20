@@ -35,7 +35,7 @@ typedef struct {
     float*** elements; ///< Three-dimensional array representing the tensor elements.
     size_t   columns;  ///< The number of columns (width) of the tensor.
     size_t   rows;     ///< The number of rows (height) of the tensor.
-    size_t   depth;    ///< The number of layers (depth) of the tensor.
+    size_t   layers;   ///< The number of layers (depth) of the tensor.
 } tensor_t;
 
 /**
@@ -46,11 +46,11 @@ typedef struct {
  *
  * @param columns The number of columns (width) for the tensor.
  * @param rows    The number of rows (height) for the tensor.
- * @param depth   The number of layers (depth) for the tensor.
+ * @param layers  The number of layers (depth) for the tensor.
  *
  * @return        A pointer to the newly created tensor, or NULL if memory allocation fails.
  */
-tensor_t* tensor_create(size_t columns, size_t rows, size_t depth);
+tensor_t* tensor_create(size_t columns, size_t rows, size_t layers);
 
 /**
  * @brief Frees the memory allocated for a tensor.
