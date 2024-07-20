@@ -1,6 +1,10 @@
 /**
+ * Copyright © 2024 Austin Berrio
+ *
  * @file examples/vectors/simple.c
- * @brief Demonstrates basic vector operations.
+ *
+ * @brief Simple C program demonstrating vector addition and calculating the magnitude of a
+ * resulting vector.
  */
 
 #include "../../shape.h"
