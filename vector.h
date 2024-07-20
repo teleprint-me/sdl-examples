@@ -22,17 +22,17 @@
 // Vector lifecycle management
 
 /**
- * @brief A structure representing an N-dimensional vector
+ * @brief A structure representing an N-dimensional vector.
  *
  * This structure stores the number of dimensions and a dynamic array of floating-point values,
  * which represent the components of the vector in each dimension.
  *
- * @param elements One dimensional array of elements representing a vector
- * @param dimensions The number of dimensions for a vector
+ * @param elements   One-dimensional array of elements representing a vector.
+ * @param dimensions The number of dimensions for the vector.
  */
 typedef struct {
-    float* elements;
-    size_t dimensions;
+    float* elements;   ///< One-dimensional array of elements representing a vector.
+    size_t dimensions; ///< The number of dimensions for the vector.
 } vector_t;
 
 /**
