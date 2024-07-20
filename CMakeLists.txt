@@ -31,3 +31,7 @@ add_executable(dda examples/lines/dda.c)
 
 # Vector examples
 add_executable(simple_vector vector.c examples/vectors/simple.c)
+add_executable(vertex vector.c examples/vectors/vertex.c)
+
+# Matrix examples
+add_executable(simple_matrix matrix.c examples/matrices/simple.c)
