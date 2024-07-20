@@ -2,20 +2,13 @@
  * @file examples/vectors/simple.c
  */
 
+#include "../../shape.h"
 #include "../../vector.h"
 
 #include <SDL2/SDL.h>
 
 #include <stdio.h>
 #include <stdlib.h>
-
-#define X 0
-#define Y 1
-
-size_t calculate_vector_magnitude(SDL_FPoint* point) {
-    // distance formula = | V | = √a^2 + √b^2
-    return abs((int) sqrtf(powf(point->x, 2) + powf(point->y, 2)));
-}
 
 int main(int argc, char* argv[]) {
     size_t dimensions = 2; // 2-dimensional vector
@@ -30,11 +23,16 @@ int main(int argc, char* argv[]) {
 
     vector_t* c = vector_vector_add(a, b);
 
+    // distance formula = | V | = √a^2 + √b^2
+    float magnitude = vector_magnitude(c);
+
     for (size_t i = 0; i < dimensions; i++) {
         fprintf(stderr, "a->elements[%zd] = %.2f\n", i, a->elements[i]);
         fprintf(stderr, "b->elements[%zd] = %.2f\n", i, b->elements[i]);
         fprintf(stderr, "c->elements[%zd] = %.2f\n", i, c->elements[i]);
     }
+
+    fprintf(stderr, "magnitude of c is %f.\n", magnitude);
 
     vector_free(a);
     vector_free(b);
