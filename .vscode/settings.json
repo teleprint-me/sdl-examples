@@ -162,6 +162,7 @@
     "sdl_events.h": "c",
     "stdbool.h": "c",
     "sdl_render.h": "c",
-    "vector.h": "c"
+    "vector.h": "c",
+    "stddef.h": "c"
   }
 }
