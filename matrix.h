@@ -47,7 +47,7 @@ typedef struct {
  *
  * @return Pointer to the newly created matrix or NULL if allocation fails.
  */
-matrix_t* create_matrix(size_t columns, size_t rows);
+matrix_t* matrix_create(size_t columns, size_t rows);
 
 /**
  * Free its memory. Safely handles NULL pointers.

@@ -1,9 +1,11 @@
 #include "matrix.h"
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 // Matrix operations
-matrix_t* create_matrix(size_t cols, size_t rows) {
+matrix_t* matrix_create(size_t columns, size_t rows) {
     matrix_t* matrix = (matrix_t*) malloc(sizeof(matrix_t));
     if (NULL == matrix) {
         fprintf(stderr, "Failed to allocate memory for matrix_t.\n");
@@ -18,7 +20,7 @@ matrix_t* create_matrix(size_t cols, size_t rows) {
     }
 
     for (size_t i = 0; i < rows; ++i) {
-        matrix->elements[i] = (float*) malloc(cols * sizeof(float));
+        matrix->elements[i] = (float*) malloc(columns * sizeof(float));
         if (NULL == matrix->elements[i]) {
             fprintf(stderr, "Failed to allocate memory for matrix columns.\n");
             // Free previously allocated rows
@@ -29,16 +31,16 @@ matrix_t* create_matrix(size_t cols, size_t rows) {
             free(matrix);
             return NULL;
         }
-        memset(matrix->elements[i], 0, cols * sizeof(float));
+        memset(matrix->elements[i], 0, columns * sizeof(float));
     }
 
-    matrix->rows = rows;
-    matrix->cols = cols;
+    matrix->columns = columns;
+    matrix->rows    = rows;
 
     return matrix;
 }
 
-void free_matrix(matrix_t* matrix) {
+void matrix_free(matrix_t* matrix) {
     if (NULL == matrix) {
         fprintf(stderr, "Cannot free a NULL matrix.\n");
         return;
