@@ -12,7 +12,7 @@ SDL_Window* create_window(int width, int height) {
 
     // Initialize the SDL library
     if (0 != SDL_Init(SDL_INIT_VIDEO)) {
-        printf("Error initializing SDL: %s\n", SDL_GetError());
+        fprintf(stderr, "Error initializing SDL: %s\n", SDL_GetError());
         return -1;
     }
 
@@ -28,7 +28,7 @@ SDL_Window* create_window(int width, int height) {
 
     // Check if the window was created successfully
     if (NULL == window) {
-        printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
+        fprintf(stderr, "Window could not be created! SDL_Error: %s\n", SDL_GetError());
         return 1;
     }
 
