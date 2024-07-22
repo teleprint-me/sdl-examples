@@ -253,9 +253,8 @@ float scalar_divide(float x, float y) {
 }
 
 // Function to perform element-wise operation between a vector and scalar value
-vector_t* perform_elementwise_scalar_operation(
-    const vector_t* a, const float b, float (*operation)(float, float)
-) {
+vector_t*
+scalar_elementwise_operation(const vector_t* a, const float b, float (*operation)(float, float)) {
     vector_t* c = vector_create(a->dimensions);
     if (NULL == c) {
         fprintf(stderr, "Failed to allocate memory for the resultant vector.\n");
@@ -271,23 +270,23 @@ vector_t* perform_elementwise_scalar_operation(
 }
 
 vector_t* vector_scalar_add(const vector_t* a, const float b) {
-    return perform_elementwise_scalar_operation(a, b, scalar_add);
+    return scalar_elementwise_operation(a, b, scalar_add);
 }
 
 vector_t* vector_scalar_subtract(const vector_t* a, const float b) {
-    return perform_elementwise_scalar_operation(a, b, scalar_subtract);
+    return scalar_elementwise_operation(a, b, scalar_subtract);
 }
 
 vector_t* vector_scalar_multiply(const vector_t* a, const float b) {
-    return perform_elementwise_scalar_operation(a, b, scalar_multiply);
+    return scalar_elementwise_operation(a, b, scalar_multiply);
 }
 
 vector_t* vector_scalar_divide(const vector_t* a, const float b) {
-    return perform_elementwise_scalar_operation(a, b, scalar_divide);
+    return scalar_elementwise_operation(a, b, scalar_divide);
 }
 
 // Function to perform element-wise operation on two vectors
-vector_t* perform_elementwise_vector_operation(
+vector_t* vector_elementwise_operation(
     const vector_t* a, const vector_t* b, float (*operation)(float, float)
 ) {
     if (a->dimensions != b->dimensions) {
@@ -317,19 +316,19 @@ vector_t* perform_elementwise_vector_operation(
 
 // Updated functions using the new helper function
 vector_t* vector_vector_add(const vector_t* a, const vector_t* b) {
-    return perform_elementwise_vector_operation(a, b, scalar_add);
+    return vector_elementwise_operation(a, b, scalar_add);
 }
 
 vector_t* vector_vector_subtract(const vector_t* a, const vector_t* b) {
-    return perform_elementwise_vector_operation(a, b, scalar_subtract);
+    return vector_elementwise_operation(a, b, scalar_subtract);
 }
 
 vector_t* vector_vector_multiply(const vector_t* a, const vector_t* b) {
-    return perform_elementwise_vector_operation(a, b, scalar_multiply);
+    return vector_elementwise_operation(a, b, scalar_multiply);
 }
 
 vector_t* vector_vector_divide(const vector_t* a, const vector_t* b) {
-    return perform_elementwise_vector_operation(a, b, scalar_divide);
+    return vector_elementwise_operation(a, b, scalar_divide);
 }
 
 // dot product is n-dimensional
