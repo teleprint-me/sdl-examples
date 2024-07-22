@@ -1,3 +1,11 @@
+/**
+ * Copyright © 2024 Austin Berrio
+ *
+ * @file examples/matrices/simple.c
+ *
+ * @brief Simple C program demonstrating the creation, initialization, and printing of a 2x2 matrix
+ */
+
 #include "../../matrix.h"
 
 #include <stdio.h>
