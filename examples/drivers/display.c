@@ -1,7 +1,7 @@
 /**
  * @file drivers.c
  *
- * Example program using Simple DirectMedia Layer (SDL) to iterate over
+ * @brief Example program using Simple DirectMedia Layer (SDL) to iterate over
  * all available display drivers on a system.
  */
 

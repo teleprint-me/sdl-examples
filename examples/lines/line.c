@@ -3,7 +3,7 @@
  *
  * @file examples/lines/line.c
  *
- * The SDL_RenderDrawLine function can be used alongside a renderer.
+ * @brief The SDL_RenderDrawLine function can be used alongside a renderer.
  */
 
 #include <SDL2/SDL.h>

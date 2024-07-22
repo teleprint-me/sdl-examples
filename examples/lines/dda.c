@@ -3,7 +3,7 @@
  *
  * @file examples/lines/dda.c
  *
- * The Digital Differential Analyzer is used for line drawing
+ * @brief The Digital Differential Analyzer is used for line drawing
  * in computer graphics, providing a simple and efficient method
  * to render lines.
  */
