@@ -1,5 +1,14 @@
 /**
- * @file vertex.c
+ * Copyright © 2024 Austin Berrio
+ *
+ * @file examples/vectors/vertex.c
+ *
+ * @brief
+ *
+ * Only use pure C.
+ * Only use libraries when absolutely necessary.
+ *
+ * @note Prefixing related objects, functions, etc. assists with autocomplete.
  */
 
 #include "../../shape.h"
