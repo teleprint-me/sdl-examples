@@ -1,3 +1,16 @@
+/**
+ * Copyright © 2024 Austin Berrio
+ *
+ * @file shape.c
+ *
+ * @brief Shapes
+ *
+ * Only use pure C.
+ * Only use libraries when absolutely necessary.
+ *
+ * @note Prefixing related objects, functions, etc. assists with autocomplete.
+ */
+
 #include "shape.h"
 
 #include <stdio.h>
