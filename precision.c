@@ -1,11 +1,24 @@
-/*
+/**
+ * Copyright © 2024 Austin Berrio
+ *
+ * @file precision.h
+ *
+ * @brief A simple and easy to use floating-point API
+ *
+ * Only use pure C.
+ * Only use libraries when absolutely necessary.
+ *
+ * @note Prefixing related objects, functions, etc. assists with autocomplete.
+ *
  * arxiv:2212.09720:The-case-for-4-bit-precision-k-bit-Inference-Scaling-Laws.pdf
  * arxiv:2110.02861:8-bit-Optimizers-via-Block-wise-Quantization.pdf
  * arxiv:2208.07339:LLM.int8-8-bit-Matrix-Multiplication-for-Transformers-at-Scale.pdf
  * arxiv:1805.11046:Scalable-Methods-for-8-bit-Training-of-Neural-Networks.pdf
  * arxiv:2310.13513:Exploring-the-Potential-of-Flexible-8-bit-Format-Design-and-Algorithm.pdf
  */
+
 #include "precision.h"
+
 #include <stdint.h>
 
 /**

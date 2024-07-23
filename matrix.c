@@ -1,3 +1,16 @@
+/**
+ * Copyright © 2024 Austin Berrio
+ *
+ * @file matrix.c
+ *
+ * @brief A simple and easy to use Matrix API
+ *
+ * Only use pure C.
+ * Only use libraries when absolutely necessary.
+ *
+ * @note Prefixing related objects, functions, etc. assists with autocomplete.
+ */
+
 #include "matrix.h"
 
 #include <stdio.h>
