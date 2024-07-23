@@ -20,18 +20,21 @@ add_link_options(-lm -lSDL2)
 
 # Add executable targets
 
-# Simple examples
+# Simple
 add_executable(simple examples/windows/simple.c)
-add_executable(environ examples/drivers/environ.c)
-add_executable(display examples/drivers/display.c)
 
-# Line examples
-add_executable(line examples/lines/line.c)
-add_executable(dda examples/lines/dda.c)
+# Drivers
+add_executable(driver_environ examples/drivers/environ.c)
+add_executable(driver_display examples/drivers/display.c)
+add_executable(driver_render examples/drivers/render.c)
 
-# Vector examples
-add_executable(simple_vector vector.c examples/vectors/simple.c)
-add_executable(vertex vector.c examples/vectors/vertex.c)
+# Lines
+add_executable(line_simple examples/lines/line.c)
+add_executable(line_dda examples/lines/dda.c)
 
-# Matrix examples
-add_executable(simple_matrix matrix.c examples/matrices/simple.c)
+# Vectors
+add_executable(vector_simple vector.c examples/vectors/simple.c)
+add_executable(vector_vertex vector.c examples/vectors/vertex.c)
+
+# Matrices
+add_executable(matrix_simple matrix.c examples/matrices/simple.c)
